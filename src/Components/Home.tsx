@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css"; // Import AOS CSS
 
@@ -6,10 +6,17 @@ import logo from "../assets/Home-assets/logo-1 (1).png";
 import homeBackgroundImage from "../assets/Home-assets/images-back.jpg";
 
 function Home() {
+
+  
+
   /* initializing AOS */
 
   useEffect(() => {
     AOS.init();
+
+    return () => {
+      AOS.refresh();
+    }
   }, []);
 
   /* Setting Home background image */
@@ -35,12 +42,43 @@ function Home() {
     </svg>
   );
 
+  /* handling on scroll */
+
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleScrolling = () => {
+      if (window.scrollY > 2) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScrolling);
+
+    return () => {
+      window.removeEventListener("scroll", handleScrolling);
+    };
+  }, []);
+
+  /* changing navigation background color on scroll */
+
+  const showHideNav = `fixed transition ease-in-out delay-500 z-[1000] top-0 left-0 w-full h-[80px] flex justify-between items-center px-4 md:px-10 pt-2 ${
+    isScrolled ? "bg-white" : ""
+  }`;
+
+  /* changing navigation link color on scroll */
+
+  const changeTextColor = `font-medium ${
+    isScrolled ? "text-black" : "text-white"
+  }`;
+
   return (
     <div>
       {/* Home navigation bar */}
 
       <div
-        className=" fixed z-[1000] top-0 left-0 w-full h-[80px] flex justify-between items-center px-4 md:px-10 pt-2"
+        className={showHideNav}
         data-aos="fade-down"
         data-aos-duration="1500"
       >
@@ -55,22 +93,22 @@ function Home() {
         <div>
           <ul className="flex gap-2 md:gap-5 items-center text-sm">
             <li className="px-3 md:px-5">
-              <a href="" className=" font-medium text-white">
+              <a href="" className={changeTextColor}>
                 Home
               </a>
             </li>
             <li className="px-3 md:px-5">
-              <a href="" className=" font-medium text-white">
+              <a href="" className={changeTextColor}>
                 Contact Us
               </a>
             </li>
             <li className="px-3 md:px-5">
-              <a href="" className=" font-medium text-white">
+              <a href="" className={changeTextColor}>
                 About Us
               </a>
             </li>
             <li className="px-3 md:px-5">
-              <a href="" className=" font-medium text-white">
+              <a href="" className={changeTextColor}>
                 Get A Job
               </a>
             </li>
