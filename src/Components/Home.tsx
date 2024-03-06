@@ -256,7 +256,7 @@ function Home() {
               {categories.map((category: string, index: number) => (
                 <div
                   key={index}
-                  className="relative border hover:text-white border-black/25 w-[200px] h-[100px] hover:!scale-[1.1] bg-[aliceblue] hover:bg-gradient-to-br from-green-400/55 to-slate-700/55 flex items-center gap-5 justify-center cursor-pointer"
+                  className="relative border border-black/25 w-[200px] h-[100px] hover:!scale-[1.1] bg-[aliceblue] from-green-400/55 to-slate-700/55 flex items-center gap-5 justify-center cursor-pointer"
                 >
                   {categoryLogo} {category}
                   <div className="absolute -top-4 -left-5 bg-white w-[15px] h-[15px] rounded-full"></div>

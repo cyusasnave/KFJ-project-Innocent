@@ -85,6 +85,7 @@ function signUp() {
     e.preventDefault();
     if (!isLastStep) return next();
     alert("Successful Account Creation");
+    {/* <Link to='dashboard' /> */}
   }
   return (
     <div className=" w-full h-screen flex overflow-hidden">
@@ -160,7 +161,9 @@ function signUp() {
               }
               type="submit"
             >
-              {isLastStep ? "Finish" : "Next"}
+              {isLastStep ? (
+                <Link to="/dashboard">"Finish"</Link>
+              ) : "Next"}
             </button>
           </div>
         </form>
