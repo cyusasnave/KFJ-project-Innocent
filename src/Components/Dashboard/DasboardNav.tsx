@@ -63,7 +63,7 @@ export default function DashboardNav({ children }: NavChild) {
   }, [windowSize]);
 
   return (
-    <aside className="h-screen w-max">
+    <aside className="sticky top-0 left-0 h-screen w-max">
       <nav className="h-full flex flex-col bg-white border-r shadow-md">
         <div className="p-4 pb-3 flex justify-between items-center">
           <div
@@ -141,7 +141,7 @@ export function NavItem({ icon, title, alert, link }: Item) {
           />
         )}
 
-        {!expanded && activeItem === title && (
+        {!expanded ? (
           <div
             className={`absolute left-full rounded-md px-2 py-1 ml-6
                         bg-indigo-100 text-indigo-800 text-sm
@@ -150,7 +150,10 @@ export function NavItem({ icon, title, alert, link }: Item) {
           >
             {title}
           </div>
-        )}
+          
+        )
+        : " "
+      }
       </li>
     </Link>
   );
