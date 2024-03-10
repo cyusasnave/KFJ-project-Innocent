@@ -11,5 +11,12 @@ class User(Base):
     is_active = Column(Boolean, default=False)
     
 
-    
+# class Employee(Base):
+#     __tablename__ = "employees"
+
+# class Job(Base):
+#     __tablename__ = "jobs"
+
+# class Employer(Base):
+#     __tablename__ = "employer"
     
