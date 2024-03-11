@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean,ForeignKey,Enum as EnumSQL,DateTime
-from database import Base
+from database import Base,engine
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from enum import Enum
@@ -17,7 +17,7 @@ class User(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     username = Column(String)
     is_active = Column(Boolean, default=False)
-    role = Column(EnumSQL(UserRole), default="employee")
+    role = Column(EnumSQL(UserRole), default="admin")
     created_at = Column(DateTime, default=datetime.now)
     password = Column(String)
     employee = relationship("Employee",back_populates="user",cascade="all, delete")
@@ -99,3 +99,5 @@ class Job(Base):
     
     
     
+    
+Base.metadata.create_all(bind=engine)
