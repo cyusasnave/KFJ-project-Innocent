@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean,ForeignKey,Enum as EnumSQL,DateTime
-from database import Base,engine
+from app.internal.database import Base,engine
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from enum import Enum
