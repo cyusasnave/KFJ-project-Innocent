@@ -23,3 +23,13 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
+    
+class UserChangePasswordModel(BaseModel):
+    old_password:str
+    new_password:str
+    
+    @model_validator(mode="after")
+    def length_of_password(self):
+        if len(self.new_password) < 8 :
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Password must be at least 8 characters")
+        return self
