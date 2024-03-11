@@ -35,7 +35,7 @@ async def get_all_users(current_user: Annotated[User, Depends(get_current_admin_
     return user
 
 # changing password by only logged in user
-@app.post("/api/v1/account/change_password")
+@app.put("/api/v1/account/change_password")
 async def change_password(data: UserChangePasswordModel,current_user: Annotated[User, Depends(get_current_user)],db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == current_user.username).first()
     if user is None:
@@ -50,6 +50,22 @@ async def change_password(data: UserChangePasswordModel,current_user: Annotated[
     user.password =hashed_password
     db.commit()
     return {"message": "Password updated successfully"}
+
+# Delete or Deactivate account endpoint
+@app.put("/api/v1/account/deactivate")
+async def deactivate_account(current_user: Annotated[User, Depends(get_current_user)],db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.username == current_user.username).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")    
+    user.is_active = False
+    db.commit()
+    return {"message": "Your Account is Deactivated from Now!"}
+
+
+# Employee user additing personal information endpoint
+@app.post("/api/v1/employee/information")
+async def add_info():
+    pass
     
 
 # Login endpoint 
