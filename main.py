@@ -1,7 +1,7 @@
 from fastapi import FastAPI,Depends, HTTPException,status,Response
 from fastapi.security import OAuth2PasswordRequestForm
 from schemas import UserModel, UserView
-from crud import get_password_hash,create_access_token,get_user,get_current_active_user,verify_password, get_current_user
+from crud import get_password_hash,get_current_admin_user,create_access_token,get_user,get_current_active_user,verify_password, get_current_user
 from models import User
 from database import get_db
 from typing import List,Annotated
@@ -18,6 +18,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 async def get_home():
     return {"Api" : "v0.1.1"}
 
+# Creating user
 @app.post("/api/v1/account", response_model=UserView)
 async def create_account(user: UserModel, db: Session = Depends(get_db)):
     hashed_password = get_password_hash(user.password)
@@ -27,8 +28,9 @@ async def create_account(user: UserModel, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
+# get all users and only user with role of admin is allowed
 @app.get("/api/v1/account/users", response_model=List[UserView])
-async def get_all_users( current_user: Annotated[User, Depends(get_current_user)],db: Session = Depends(get_db)):
+async def get_all_users( current_user: Annotated[User, Depends(get_current_admin_user)],db: Session = Depends(get_db)):
     user = db.query(User).all()
     return user
 
