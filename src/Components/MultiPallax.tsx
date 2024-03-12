@@ -4,6 +4,68 @@ import formPhoto from "../assets/Services-Background/capacity-building.webp";
 
 function MultiPallax() {
   const [showMessage, setShowMessage] = useState(false);
+  const [username,setUsername] = useState("")
+  const [firstName,setFirstName] = useState("")
+  const [lastName,setLastName] = useState("")
+  const [email,setEmail] = useState("")
+  const [password,setPassword] = useState("")
+  const [confirmPassword,setConfirmPassword] = useState("")
+
+  const [loginUsername, setLoginUsername] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  
+  const handleOnSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(loginUsername, loginPassword);
+    try{
+      const response = await fetch("http://localhost:8000/token", {
+      method: "POST",
+      headers: {
+        'Content-type' : 'application/x-www-form-urlencoded'
+      },
+      body: `username=${encodeURIComponent(loginUsername)}&password=${encodeURIComponent(loginPassword)}`
+    })
+    if (response.ok) {
+      const token = await response.json()
+      sessionStorage.setItem("token", JSON.stringify(token))
+      console.log("login successfull");
+      
+    }
+    else{
+      const errorData = await response.json()
+      console.log(errorData.detail);
+    }
+    }
+    catch (err){
+      console.log(err);
+    }
+  }
+  const handleOnSignUp = (event: React.FormEvent<HTMLFormElement>) =>{
+    event.preventDefault();
+    if (password !== "" && confirmPassword !== "") {
+      console.log(firstName,lastName,email,password,confirmPassword);
+      fetch("http://localhost:8000/api/v1/create_account",{
+      method: "POST",
+      headers: {
+        'Content-type' : 'application/json'
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      })
+      })
+      .then(res =>{
+        if (res.ok) {
+          console.log("Account created");
+          
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+        
+      })
+     
+  }}
 
   const toggleMessage = () => {
     setShowMessage((prevShowMessage) => !prevShowMessage);
@@ -163,9 +225,11 @@ function MultiPallax() {
               <div className="w-[70%] h-max text-xs text-center font-thin text-red-500"></div>
             </div>
             {form ? (
-              <form action="" method="post" className="w-full">
+              <form onSubmit={handleOnSignUp} className="w-full">
                 <div className="w-full flex justify-center items-center mb-4">
                   <input
+                    value={username}
+                    onChange={(e)=>setUsername(e.target.value)}
                     type="text"
                     name="firstName"
                     placeholder="First Name"
@@ -174,6 +238,18 @@ function MultiPallax() {
                 </div>
                 <div className="w-full flex justify-center items-center mb-4">
                   <input
+                    value={firstName}
+                    onChange={(e)=>setFirstName(e.target.value)}
+                    type="text"
+                    name="firstName"
+                    placeholder="First Name"
+                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
+                  />
+                </div>
+                <div className="w-full flex justify-center items-center mb-4">
+                  <input
+                    value={lastName}
+                    onChange={(e)=>setLastName(e.target.value)}
                     type="text"
                     name="lastName"
                     placeholder="Last Name"
@@ -183,6 +259,8 @@ function MultiPallax() {
                 <div className="w-full flex justify-center items-center mb-4">
                   <input
                     type="email"
+                    value={email}
+                    onChange={(e)=>setEmail(e.target.value)}
                     name="email"
                     placeholder="Email"
                     className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
@@ -192,6 +270,8 @@ function MultiPallax() {
                   <input
                     type="password"
                     name="password"
+                    value={password}
+                    onChange={(e)=>setPassword(e.target.value)}
                     placeholder="Password"
                     className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
                   />
@@ -199,6 +279,8 @@ function MultiPallax() {
                 <div className="w-full flex justify-center items-center mb-4">
                   <input
                     type="password"
+                    value={confirmPassword}
+                    onChange={(e)=>setConfirmPassword(e.target.value)}
                     name="confirmPassword"
                     placeholder="Confirm Password"
                     className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
@@ -215,10 +297,12 @@ function MultiPallax() {
                 </div>
               </form>
             ) : (
-              <form action="" method="post" className="w-full">
+              <form onSubmit={handleOnSignIn} method="post" className="w-full">
                 <div className="w-full flex justify-center items-center mb-4">
                   <input
-                    type="email"
+                    type="text"
+                    value={loginUsername}
+                    onChange={(e)=>setLoginUsername(e.target.value)}
                     name="email"
                     placeholder="Email"
                     className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
@@ -227,6 +311,8 @@ function MultiPallax() {
                 <div className="w-full flex justify-center items-center mb-4">
                   <input
                     type="password"
+                    value={loginPassword}
+                    onChange={(e)=>setLoginPassword(e.target.value)}
                     name="password"
                     placeholder="Password"
                     className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
