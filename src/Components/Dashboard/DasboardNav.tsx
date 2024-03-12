@@ -95,9 +95,9 @@ export default function DashboardNav({ children }: NavChild) {
             }`}
           >
             <div className="leading-4">
-              <h4 className="font-semibold">Snave Cyusa</h4>
+              <h4 className="font-semibold">Janet Dallern</h4>
               <span className="text-xs text-gray-600">
-                snavecyusa@gmail.com
+                Janetdallern@gmail.com
               </span>
             </div>
             <MoreVertical size={20} />

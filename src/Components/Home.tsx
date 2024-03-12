@@ -4,7 +4,6 @@ import logo from "../assets/Home-assets/changed-logo.png";
 import anotherLogo from "../assets/Home-assets/logo (1).png";
 import categoryBackground from "../assets/categories.jpg";
 import categories from "../Data/categories";
-import { Link } from "react-router-dom";
 
 interface WindowSize {
   width: number;
@@ -32,7 +31,7 @@ function Home() {
     return windowSize.width <= 965; // Enable burger menu for iPad and mobile screens (less than or equal to 768px)
   };
 
-  const applySVG = (
+  /* const applySVG = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="16"
@@ -45,7 +44,7 @@ function Home() {
       <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586l-1.239-.757ZM16 4.697v4.974A4.491 4.491 0 0 0 12.5 8a4.49 4.49 0 0 0-1.965.45l-.338-.207L16 4.697Z" />{" "}
       <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />{" "}
     </svg>
-  );
+  ); */
 
   /* handling on scroll */
 
@@ -225,8 +224,8 @@ function Home() {
 
         {/* Apply for job button */}
 
-        <div>
-          <Link to="signUp">
+        {<div>
+          {/* <Link to="signUp">
             <button
               type="button"
               className=" py-2 px-3 bg-sky-700 border-none rounded text-white flex justify-center items-center gap-2"
@@ -234,8 +233,8 @@ function Home() {
               {applySVG}
               Apply For A Job
             </button>
-          </Link>
-        </div>
+          </Link> */}
+        </div>}
       </div>
       {showCategories ? (
         <div

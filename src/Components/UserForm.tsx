@@ -1,8 +1,7 @@
 import { FormWrapper } from "./FormWrapper";
 
 type UserData = {
-  firstName: string;
-  lastName: string;
+  phoneNumber: string;
   age: string;
   birthDate: string;
   NId: string;
@@ -13,8 +12,7 @@ type UserFormProps = UserData & {
 };
 
 export function UserForm({
-  firstName,
-  lastName,
+  phoneNumber,
   age,
   birthDate,
   NId,
@@ -25,7 +23,7 @@ export function UserForm({
 
   return (
     <FormWrapper title="Personal Information">
-      <div className={inputDiv}>
+      {/* <div className={inputDiv}>
         <input
           autoFocus
           required
@@ -35,15 +33,15 @@ export function UserForm({
           value={firstName}
           onChange={(e) => updateFields({ firstName: e.target.value })}
         />
-      </div>
+      </div> */}
       <div className={inputDiv}>
         <input
           required
           type="text"
           className={inputStyle}
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => updateFields({ lastName: e.target.value })}
+          placeholder="Phone Number"
+          value={phoneNumber}
+          onChange={(e) => updateFields({ phoneNumber: e.target.value })}
         />
       </div>
       <div className={inputDiv}>

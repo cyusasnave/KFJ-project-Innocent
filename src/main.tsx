@@ -7,7 +7,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import SignUp from './Components/signUp.tsx';
+import SignUp from './Components/Dashboard/SignUp.tsx';
 import DashboardHome from './Components/Dashboard/DashboardHome.tsx';
 import DashboardStatistics from './Components/Dashboard/DashboardStatistics.tsx';
 import DashboardUsers from './Components/Dashboard/Dashboardusers.tsx';
@@ -33,11 +33,11 @@ const router = createBrowserRouter([
     element: <DashboardHome />
   },
   {
-    path: "dashboard/statistics", // Corrected path with leading forward slash
+    path: "dashboard/list", // Corrected path with leading forward slash
     element: <DashboardStatistics />
   },
   {
-    path: "dashboard/users", // Corrected path with leading forward slash
+    path: "dashboard/messages", // Corrected path with leading forward slash
     element: <DashboardUsers />
   },
   {

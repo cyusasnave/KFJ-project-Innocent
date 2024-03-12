@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import transparent from "../assets/transparent.png";
 import { useState } from "react";
+import formPhoto from "../assets/Services-Background/capacity-building.webp";
 
 function MultiPallax() {
   const [showMessage, setShowMessage] = useState(false);
@@ -104,8 +104,169 @@ function MultiPallax() {
     </svg>
   );
 
+  const [form, setForm] = useState(false);
+  const toggleForm = () => {
+    setForm((prevForm) => !prevForm);
+  };
+
+  const [activateform, setActivateform] = useState(true);
+  const toggleActivateForm = () => {
+    setActivateform((prevForm) =>!prevForm);
+  };
+
   return (
     <div className="w-full h-screen overflow-hidden relative grid place-items-center">
+      {/* log in and sign up forms */}
+      { activateform ? " " : (
+        <div
+        style={{
+          background: "rgba(0, 0, 0, 0.7)",
+        }}
+        className="fixed top-0 left-0 w-full h-screen z-[2000] flex justify-center items-center"
+      >
+        <div className="bg-white w-[80%] h-[80vh] rounded-lg p-3 flex">
+          <div
+            style={{
+              backgroundImage: `url(${formPhoto})`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+            }}
+            className={`w-[50%] h-full border`}
+          >
+            <div
+              style={{
+                background: "rgba(0,0,0,0.5)",
+              }}
+              className="w-full h-full flex justify-center items-center flex-col"
+            >
+              <div className="flex justify-center items-end space-x-2 md:space-x-12">
+                <div className="w-20 h-1 mb-1 bg-neutral-400"></div>
+                <h2 className="font-bold text-neutral-300 text-3xl">
+                  The Best
+                </h2>
+                <div className="w-20 h-1 mb-1 bg-neutral-400"></div>
+              </div>
+              <h1 className="text-5xl text-center text-white mt-5">
+                To Empower Your Career
+              </h1>
+            </div>
+          </div>
+
+          {/* form container */}
+
+          <div className="relative w-[50%] h-full flex flex-col justify-center items-center">
+              <div onClick={toggleActivateForm} className="absolute bottom-5 right-5 px-5 py-1 bg-black/50 rounded hover:bg-black/30 cursor-pointer">Cancel</div>
+            <h3 className="text-black text-2xl font-bold mb-4 text-center">
+              {form ? "Create an account?" : "Welcome Back!"}
+            </h3>
+            <div className="w-full flex justify-center items-center mb-4">
+              <div className="w-[70%] h-max text-xs text-center font-thin text-red-500"></div>
+            </div>
+            {form ? (
+              <form action="" method="post" className="w-full">
+                <div className="w-full flex justify-center items-center mb-4">
+                  <input
+                    type="text"
+                    name="firstName"
+                    placeholder="First Name"
+                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
+                  />
+                </div>
+                <div className="w-full flex justify-center items-center mb-4">
+                  <input
+                    type="text"
+                    name="lastName"
+                    placeholder="Last Name"
+                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
+                  />
+                </div>
+                <div className="w-full flex justify-center items-center mb-4">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
+                  />
+                </div>
+                <div className="w-full flex justify-center items-center mb-4">
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
+                  />
+                </div>
+                <div className="w-full flex justify-center items-center mb-4">
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
+                  />
+                </div>
+
+                <div className="w-full flex justify-center items-center mb-4">
+                  <button
+                    type="submit"
+                    className="w-[70%] bg-green-300 p-2 rounded border-none hover:bg-green-500"
+                  >
+                    Register
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <form action="" method="post" className="w-full">
+                <div className="w-full flex justify-center items-center mb-4">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
+                  />
+                </div>
+                <div className="w-full flex justify-center items-center mb-4">
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
+                  />
+                </div>
+
+                <div className="w-full flex justify-center items-center mb-4">
+                  <button
+                    type="submit"
+                    className="w-[70%] bg-green-300 p-2 rounded border-none hover:bg-green-500"
+                  >
+                    LogIn
+                  </button>
+                </div>
+                <div className="w-full flex justify-center items-center mb-4">
+                  <a
+                    href="http://"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-light text-end text-red-700 w-[70%] underline"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
+              </form>
+            )}
+            <div>
+              {form ? "Have an account?" : "Don't have an account?"}{" "}
+              <span
+                onClick={toggleForm}
+                className="text-green-700 cursor-pointer"
+              >
+                {form ? "LogIn" : "Register now"}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      )}
+      {/* home content */}
       <div
         className="absolute inset-0 z-0"
         style={{
@@ -187,16 +348,16 @@ function MultiPallax() {
         >
           We work with businesses in all aspects
         </div>
-        <Link to="signUp" className="absolute bottom-[50px] z-40">
+        <div onClick={toggleActivateForm} className="absolute bottom-[50px] z-40">
           {" "}
           <button
             data-aos="fade-up"
             data-aos-duration="3000"
             className="z-40 px-10 py-2 bg-indigo-500 border-none rounded-full hover:bg-gradient-to-br from-sky-400/55 to-slate-700/55"
           >
-            Request a Job
+            Join
           </button>
-        </Link>
+        </div>
       </div>
     </div>
   );
