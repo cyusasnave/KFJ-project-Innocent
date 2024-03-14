@@ -1,19 +1,42 @@
 export const jobData = [
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
- "[Name of company hiring]",
+ {
+    companyName: "[Company Name]",
+    isApproved: true
+ },
+ {
+    companyName: "[Company Name]",
+    isApproved: false
+ },
+ {
+    companyName: "[Company Name]",
+    isApproved: false
+ },
+ {
+    companyName: "[Company Name]",
+    isApproved: false
+ },
+ {
+    companyName: "[Company Name]",
+    isApproved: true
+ },
+ {
+    companyName: "[Company Name]",
+    isApproved: false
+ },
+ {
+    companyName: "[Company Name]",
+    isApproved: false
+ },
+ {
+    companyName: "[Company Name]",
+    isApproved: true
+ },
+ {
+    companyName: "[Company Name]",
+    isApproved: false
+ },
+ {
+    companyName: "[Company Name]",
+    isApproved: true
+ },
 ]

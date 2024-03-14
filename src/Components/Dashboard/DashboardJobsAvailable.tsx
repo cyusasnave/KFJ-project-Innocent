@@ -55,15 +55,15 @@ function DashboardStatistics() {
             <input type="text" className="w-[95%] outline-none bg-transparent" placeholder="Search" />
           </div>
         </div>
-        <table className="w-full table-collapse">
+        <table className="w-full table-auto">
           <caption className="caption-top mb-5 font-thin text-xs">
             Table 1.1: List of all available job opportunities. (<span className="text-red-800">Tip:</span> Click on the checkbox to add a job to your Preferred list)
           </caption>
           <thead className="w-full h-max p-3">
             <tr className="w-full h-[80px] bg-indigo-200/70">
               <th className={!enableBurgerMenu() ? " " : "hidden"}>{" "}</th>
-              <th className="text-sm md:text-lg font-light md:font-base">JOB DESCRIPTION & CONDITIONS</th>
-              <th className="text-sm md:text-lg border-l-2 border-black/20 font-light md:font-base">CONTACTS</th>
+              <th className="text-sm md:text-lg font-light md:font-base">{enableBurgerMenu() ? "JOB DESCRIPTION, CONDITIONS & CONTACTS" : "JOB DESCRIPTION & CONDITIONS"}</th>
+              <th className={`text-sm md:text-lg border-l-2 border-black/20 font-light md:font-base ${!enableBurgerMenu() ? " " : "hidden"}`}>CONTACTS</th>
             </tr>
           </thead>
           <tbody className="w-full">
@@ -86,8 +86,8 @@ function DashboardStatistics() {
                     )}
                   </div>
                 </td>
-                <td className="h-max  p-3 text-justify text-sm font-light flex flex-col"><span>{item.companyName}</span> <span className="font-light">{item.name}</span></td>
-                <td className="h-max  p-3 border-l-2 text-sm font-light"> <strong className="font-bold">Email:</strong> {item.email} <br /> <strong className="font-bold">Tel:</strong> <br /> {item.contact}</td>
+                <td className="h-max p-3 text-justify text-sm font-light flex flex-col"><span>{item.companyName}</span> <span className="font-light">{item.name}</span></td>
+                <td className={`h-max p-3 border-l-2 ${!enableBurgerMenu() ? " " : "flex flex-col gap-3 justify-center"}`}> <span className="text-sm font-light"><strong className="font-bold">Email:</strong> {item.email}</span> <span className="text-sm font-light"><strong className="font-bold"> Tel:</strong>  {item.contact}</span></td>
               </tr>
             ))}
           </tbody>
