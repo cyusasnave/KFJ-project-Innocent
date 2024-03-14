@@ -1,7 +1,10 @@
 import transparent from "../assets/transparent.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import formPhoto from "../assets/Services-Background/capacity-building.webp";
 
+interface WindowSize {
+  width: number;
+}
 function MultiPallax() {
   const [showMessage, setShowMessage] = useState(false);
   const [username,setUsername] = useState("")
@@ -176,6 +179,26 @@ function MultiPallax() {
     setActivateform((prevForm) =>!prevForm);
   };
 
+  const [windowSize, setWindowSize] = useState<WindowSize>({
+    width: window.innerWidth,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const enableBurgerMenu = (): boolean => {
+    return windowSize.width <= 965; // Enable burger menu for iPad and mobile screens (less than or equal to 768px)
+  };
+
   return (
     <div className="w-full h-screen overflow-hidden relative grid place-items-center">
       {/* log in and sign up forms */}
@@ -193,7 +216,9 @@ function MultiPallax() {
               backgroundPosition: "center",
               backgroundSize: "cover",
             }}
-            className={`w-[50%] h-full border`}
+            className={`${
+              enableBurgerMenu() ? "w-0 hidden" : "w-[50%]"
+            } h-full border`}
           >
             <div
               style={{
@@ -201,14 +226,14 @@ function MultiPallax() {
               }}
               className="w-full h-full flex justify-center items-center flex-col"
             >
-              <div className="flex justify-center items-end space-x-2 md:space-x-12">
-                <div className="w-20 h-1 mb-1 bg-neutral-400"></div>
-                <h2 className="font-bold text-neutral-300 text-3xl">
+              <div className="flex justify-center items-end space-x-1 md:space-x-2">
+                <div className="w-10 md:w-20 h-1 mb-1 bg-neutral-400"></div>
+                <h2 className="font-bold text-neutral-300 text-2xl text-center md:text-3xl">
                   The Best
                 </h2>
-                <div className="w-20 h-1 mb-1 bg-neutral-400"></div>
+                <div className="w-10 md:w-20 h-1 mb-1 bg-neutral-400"></div>
               </div>
-              <h1 className="text-5xl text-center text-white mt-5">
+              <h1 className="text-3xl md:text-5xl text-center text-white mt-5">
                 To Empower Your Career
               </h1>
             </div>
@@ -216,7 +241,9 @@ function MultiPallax() {
 
           {/* form container */}
 
-          <div className="relative w-[50%] h-full flex flex-col justify-center items-center">
+          <div className={`relative ${
+                enableBurgerMenu() ? "w-[100%]" : "w-[50%]"
+              } h-full flex flex-col justify-center items-center`}>
               <div onClick={toggleActivateForm} className="absolute bottom-5 right-5 px-5 py-1 bg-black/50 rounded hover:bg-black/30 cursor-pointer">Cancel</div>
             <h3 className="text-black text-2xl font-bold mb-4 text-center">
               {form ? "Create an account?" : "Welcome Back!"}
