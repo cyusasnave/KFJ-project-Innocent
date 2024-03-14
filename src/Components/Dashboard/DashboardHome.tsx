@@ -6,7 +6,6 @@ import SignUp from "./SignUp";
 import { Link } from "react-router-dom";
 import { tableData } from "../../Data/jobAvailaibleTableData";
 import { platforms } from "../../Data/HearAboutUs";
-import { platform } from "os";
 
 interface WindowSize {
   width: number;
@@ -57,7 +56,7 @@ function DashboardHome() {
 
   return (
     <div className="flex">
-      {/* <SignUp /> */}
+      <SignUp />
       <DashboardHomeNav />
 
       {/* request job form */}
