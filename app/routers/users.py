@@ -22,7 +22,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
 
 # Creating user
-@router.post("/api/v1/account", response_model=UserView)
+@router.post("/api/v1/create_account", response_model=UserView)
 async def create_account(user: UserModel, db: Session = Depends(get_db)):
     hashed_password = get_password_hash(user.password)
     new_user = User(username=user.username, password=hashed_password, role="admin")
@@ -84,6 +84,7 @@ async def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Session = Depends(get_db),
 ):
+    print(form_data.username, form_data.password)
     user = get_user(db, form_data.username)
     if not user:
         raise HTTPException(

@@ -11,7 +11,7 @@ class UserModel(BaseModel):
     def length_of_password(self):
         if len(self.password) < 8:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
+                status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Password must be at least 8 characters",
             )
         return self
