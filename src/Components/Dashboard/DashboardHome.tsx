@@ -30,7 +30,7 @@ function DashboardHome() {
   };
   return (
     <div className="flex">
-      {/* <SignUp /> */}
+      <SignUp />
       <DashboardHomeNav />
       <div className="w-full h-max">
         {/*  Remember to enable the dark theme here(...Home header... ) */}
