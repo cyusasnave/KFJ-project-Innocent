@@ -1,7 +1,7 @@
 import DashboardHomeNav from "./DashboardHomeNav";
 import { jobData } from "../../Data/dashboardJobRequest";
 import { useEffect, useState } from "react";
-import { Search, X } from "lucide-react";
+import { Check, Search, X } from "lucide-react";
 
 interface WindowSize {
   width: number;
@@ -31,7 +31,7 @@ function DashboardJobRequest() {
   }, []);
 
   const enableBurgerMenu = (): boolean => {
-    return windowSize.width <= 965; // Enable burger menu for iPad and mobile screens (less than or equal to 768px)
+    return windowSize.width <= 500; // Enable burger menu for iPad and mobile screens (less than or equal to 768px)
   };
 
   return (
@@ -69,9 +69,9 @@ function DashboardJobRequest() {
                 <td className="h-max  p-3 text-center text-sm font-light flex flex-col"><span className="font-light">{item.companyName}</span></td>
                 <td className="h-max  p-3 text-xs font-semibold">
                   {item.isApproved ? (
-                    <button className="bg-green-300 w-max h-max px-5 py-2 rounded">Approved</button>
+                    <button className={`bg-green-300 w-max h-max ${enableBurgerMenu() ? "px-2" : "px-5"} py-2 rounded`}>{enableBurgerMenu() ? (<Check />) : "Approved"}</button>
                   ) : (
-                    <button className="bg-red-300 w-max h-max px-2 py-2 rounded">Not approved</button>
+                    <button className="bg-red-300 w-max h-max px-2 py-2 rounded">{enableBurgerMenu() ? (<X />) : "Not approved"}</button>
                   )}
                 </td>
               </tr>
