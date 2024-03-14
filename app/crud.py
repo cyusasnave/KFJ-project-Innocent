@@ -26,8 +26,8 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-def get_user(db, username):
-    return db.query(User).filter(User.username == username).first()
+def get_user(db, email):
+    return db.query(User).filter(User.email == email).first()
 
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
@@ -51,13 +51,13 @@ async def get_current_user(
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
+        email: str = payload.get("sub")
+        if email is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = TokenData(email=email)
     except JWTError:
         raise credentials_exception
-    user = get_user(db, username=token_data.username)
+    user = get_user(db, email=token_data.email)
     if user is None:
         raise credentials_exception
     return user
