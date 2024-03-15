@@ -1,6 +1,7 @@
 import transparent from "../assets/transparent.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import formPhoto from "../assets/Services-Background/capacity-building.webp";
+import { useNavigate  } from 'react-router-dom';
 
 function MultiPallax() {
   const [showMessage, setShowMessage] = useState(false);
@@ -13,6 +14,25 @@ function MultiPallax() {
 
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+
+  const isAuthenticated = sessionStorage.getItem("isAuthenticated");
+  const token = sessionStorage.getItem("token");
+  const [authenticated, setAuthenticated] = useState(isAuthenticated ? JSON.parse(isAuthenticated) : false);
+  const [session, setSession] = useState(token ? JSON.parse(token) : false);
+
+  
+
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if(session !== false){
+      setAuthenticated(true);
+      sessionStorage.setItem("isAuthenticated", authenticated.toString());
+      navigate("/dashboard")
+    }
+    console.log(authenticated);
+  }, []);
   
   const handleOnSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,8 +48,11 @@ function MultiPallax() {
     if (response.ok) {
       const token = await response.json()
       sessionStorage.setItem("token", JSON.stringify(token))
-      console.log("login successfull");
-      
+      // console.log("login successfull");
+      setAuthenticated(true);
+      const authenticated = true;
+      sessionStorage.setItem("isAuthenticated", authenticated.toString());
+      navigate("/dashboard")
     }
     else{
       const errorData = await response.json()
@@ -57,12 +80,10 @@ function MultiPallax() {
       .then(res =>{
         if (res.ok) {
           console.log("Account created");
-          
         }
       })
       .catch(err=>{
         console.log(err);
-        
       })
      
   }}
