@@ -1,7 +1,7 @@
 export const platforms = [
-    "Advertisements",
-    "Social media",
-    "Friends",
-    "Relatives",
-    "Others"
+    "Advertisements/Kwamaza",
+    "Social media/Imbuga",
+    "Friends/Inshuti",
+    "Relatives/Abavandimwe",
+    "Others/Ikindi"
 ]
