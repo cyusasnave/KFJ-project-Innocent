@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import SignUp from './Components/Dashboard/SignUp.tsx';
 import DashboardHome from './Components/Dashboard/DashboardHome.tsx';
-import DashboardStatistics from './Components/Dashboard/DashboardStatistics.tsx';
+import DashboardStatistics from './Components/Dashboard/DashboardJobsAvailable.tsx';
 import DashboardUsers from './Components/Dashboard/Dashboardusers.tsx';
 import DashboardJobRequest from './Components/Dashboard/DashboardJobRequest.tsx';
 import DashboardSettings from './Components/Dashboard/DashboardSettings.tsx';
