@@ -35,6 +35,10 @@ function DashboardHome() {
   const toggleActivateForm = () => {
     setActivateform((prevForm) => !prevForm);
   };
+  const [activateSecondform, setActivateSecondform] = useState(true);
+  const toggleActivateSecondForm = () => {
+    setActivateSecondform((prevForm) => !prevForm);
+  };
 
   const [selectedRows, setSelectedRows] = useState<boolean[]>(() =>
     tableData.map(() => false)
@@ -68,12 +72,12 @@ function DashboardHome() {
           style={{
             background: "rgba(0, 0, 0, 0.5)",
           }}
-          className="w-full h-full fixed top-0 left-0 flex justify-center items-center z-[2000]"
+          className="w-full h-full fixed top-0 left-0 flex justify-center items-center z-[2000] overflow-y-scroll p-5"
         >
-          <div className="relative w-[80%] h-max bg-white rounded flex justify-center items-center">
+          <div className="relative w-[80%] bg-white rounded flex justify-center items-center mt-20">
             <div
               onClick={() => toggleActivateForm()}
-              className="absolute right-5 bottom-5 px-5 py-1 bg-black/20 hover:bg-black/40 text-white rounded-lg cursor-pointer"
+              className="absolute right-5 bottom-5 px-5 py-1 bg-black/20 hover:bg-black/40 text-white rounded-lg cursor-pointer z-20"
             >
               Cancel
             </div>
@@ -82,14 +86,44 @@ function DashboardHome() {
               action=""
               method="post"
               onSubmit={onSubmit}
-              className="w-full h-max p-5 text-sm"
+              className="relative w-full h-max p-5 text-sm"
             >
-              <h1 className="text-3xl font-semibold text-center text-indigo-500 my-5">APPLICATION FOR EMPLOYMENT</h1>
+              {activateSecondform ? (
+                <div className="absolute top-0 left-0 w-full h-full bg-white/70 flex justify-center items-center">
+                <div className="bg-white border-2 border-black/30 w-[70%] h-1/2 shadow-lg rounded-lg p-5 flex flex-col justify-center items-center">
+                  <p className="text-red-800 text-xl">Attention!</p>
+                  <p className="text-sm p-3 text-center">
+                    Do you agree that the information going to provided are true
+                    and any mismatched information may lead to termination of
+                    the application / Wemeza ko amakuru ugiye gutanga ariyo
+                    kandi amakuru azamenyeranya nkatariyo ko azatera ihagarikwa
+                    ry'akazi
+                  </p>
+                  <div className="flex gap-5 items-center">
+                    <div
+                      onClick={() => toggleActivateForm()}
+                      className="px-5 py-1 bg-indigo-800/70 hover:bg-black/40 text-white rounded-lg cursor-pointer mt-5"
+                    >
+                      DisAgree/Oya
+                    </div>
+                    <div
+                      onClick={() => toggleActivateSecondForm()}
+                      className="px-5 py-1 bg-indigo-800/70 hover:bg-black/40 text-white rounded-lg cursor-pointer mt-5"
+                    >
+                      Agree/Yego
+                    </div>
+                  </div>
+                </div>
+              </div>
+              ) : " "}
+              <h1 className="text-3xl font-semibold text-center text-indigo-500 my-5">
+                APPLICATION FOR EMPLOYMENT
+              </h1>
               <div className="w-full h-max border-2 border-indigo-500 p-5 rounded">
-                <h3>How did you hear about us?</h3>
-                <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 p-3">
+                <h3>How did you hear about us?/Watwumvise gute?</h3>
+                <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2 p-3">
                   {platforms.map((platform, index) => (
-                    <div className="flex gap-3 items-center">
+                    <div className="flex gap-1 items-center w-max">
                       <div
                         onClick={() => toggleSelected(index)}
                         className={`w-[20px] h-[20px] ${
@@ -102,7 +136,7 @@ function DashboardHome() {
                           </div>
                         )}
                       </div>
-                      <div className="font-thin">{platform}</div>
+                      <div className="font-thin w-max">{platform}</div>
                     </div>
                   ))}
                 </div>
@@ -119,8 +153,9 @@ function DashboardHome() {
                     ))}
                   </select>
                   <p className="text-xs font-thin px-3">
-                    Please select a job opportunity from the list below that
-                    best aligns with your skills and interests
+                    Hitamo izina ry' aho uri kwaka akazi / Please select a job
+                    opportunity from the list below that best aligns with your
+                    skills and interests
                   </p>
                 </div>
                 <div className="w-full flex flex-col gap-3">
@@ -132,12 +167,61 @@ function DashboardHome() {
                     placeholder="Cover Letter"
                   />
                   <p className="text-xs font-thin px-3">
+                    Shyira ibaruwa isaba akazi mu mwanya watanzwe ivuga kukazi
+                    ugashaka nimpamvu ugashak, ndetse nakazi warusanzwe ukora/
                     Upload your cover letter providing additional information
                     about your qualifications and interest in this position,
-                    witha also your previous employment history, job title,
+                    with a also your previous employment history, job title,
                     responsibilities and References
                   </p>
                 </div>
+              </div>
+              <div className="w-full h-max p-5 grid justify-items gap-3 grid-cols-1 md:grid-cols-2">
+                <div className="flex flex-col gap-3">
+                  <label
+                    htmlFor="levelOfEducation"
+                    className="text-xs font-thin"
+                  >
+                    Level of Education/Amashuri wize:
+                  </label>
+                  <select
+                    name=""
+                    id="levelOfEducation"
+                    className="py-3 px-3 bg-black/10 text-black/70 font-thin text-sm rounded outline-none"
+                  >
+                    <option value="">None</option>
+                    <option value="">
+                      Early Childhood Education/ Amashuri y'Incuke
+                    </option>
+                    <option value="">Primary Education/Amashuri abanza</option>
+                    <option value="">
+                      Secondary Education/Amashuri y'isumbuye
+                    </option>
+                    <option value="">
+                      Vocational Education and Training (VET)/ Imyuga
+                    </option>
+                    <option value="">Higher Education/Amashuri makuru</option>
+                  </select>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <p className="text-xs font-thin px-3">
+                    Upload your Curriculum Vitae(CV)/ Igitabo cy'ubuhanga
+                  </p>
+                  <input
+                    type="file"
+                    className="py-2 px-3 bg-black/10 text-black/70 font-thin text-sm rounded outline-none"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-3">
+                <p className="text-xs font-thin text-center">
+                  Remember to check your email to fill the form required! /
+                  Ibuka kureba imeyili zawe murwego rwo kuzuza igice
+                  cy'igisubizo woherejwe.
+                </p>
+                <a className="text-xs font-thin text-center text-indigo-700 underline cursor-pointer">
+                  Privacy policy and condition
+                </a>
               </div>
               <div className="w-full h-max pl-10">
                 <button
