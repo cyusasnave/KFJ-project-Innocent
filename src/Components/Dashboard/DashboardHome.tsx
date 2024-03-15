@@ -60,7 +60,7 @@ function DashboardHome() {
 
   return (
     <div className="flex">
-      {/* <SignUp /> */}
+      <SignUp />
       <DashboardHomeNav />
 
       {/* request job form */}
