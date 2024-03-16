@@ -91,3 +91,11 @@ class JobCategoryModel(BaseModel):
 class JobCategoryView(BaseModel):
     id: UUID
     category: str
+    
+class SubJobCategoryModel(BaseModel):
+    sub_category: str
+    
+    
+class SubJobCategoryView(BaseModel):
+    id: UUID
+    sub_category: str
