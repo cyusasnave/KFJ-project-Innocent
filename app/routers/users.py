@@ -24,7 +24,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 @router.post("/api/v1/account", response_model=UserView)
 async def create_account(user: UserModel, db: Session = Depends(get_db)):
     hashed_password = get_password_hash(user.password)
-    new_user = User(email=user.email, password=hashed_password, role="employee")
+    new_user = User(email=user.email, password=hashed_password)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

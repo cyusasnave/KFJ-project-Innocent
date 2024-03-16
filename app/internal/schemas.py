@@ -1,10 +1,10 @@
-from pydantic import BaseModel, model_validator,EmailStr
+from pydantic import BaseModel, model_validator, EmailStr
 from uuid import UUID
 from fastapi import HTTPException, status
 
 
 class UserModel(BaseModel):
-    email: EmailStr 
+    email: EmailStr
     password: str
     confirm_password: str
 
@@ -16,7 +16,7 @@ class UserModel(BaseModel):
                 detail="Password must be at least 8 characters",
             )
         return self
-    
+
     @model_validator(mode="after")
     def password_similality(self):
         if self.password != self.confirm_password:
@@ -54,8 +54,7 @@ class UserChangePasswordModel(BaseModel):
                 detail="Password must be at least 8 characters",
             )
         return self
-    
-    
+
     @model_validator(mode="after")
     def password_similality(self):
         if self.new_password != self.confirm_password:
@@ -64,3 +63,23 @@ class UserChangePasswordModel(BaseModel):
                 detail="Password and Confirm password doesn't match",
             )
         return self
+
+
+class EmployeeModel(BaseModel):
+    first_name: str
+    last_name: str
+    phone: str
+    province: str
+    district: str
+    sector: str
+    cell: str
+    village: str
+    
+    
+class SpecializationModel(BaseModel):
+    name: str
+    
+
+class SpecializationView(BaseModel):
+    id: UUID
+    name: str

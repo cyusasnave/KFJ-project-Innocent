@@ -26,11 +26,12 @@ class User(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     email = Column(String, unique=True)
     is_active = Column(Boolean, default=True)
-    role = Column(EnumSQL(UserRole), default="admin")
+    role = Column(EnumSQL(UserRole), default="employee")
     created_at = Column(DateTime, default=datetime.now)
     password = Column(String)
     employee = relationship("Employee", back_populates="user", cascade="all, delete")
     employer = relationship("Employer", back_populates="user", cascade="all, delete")
+    job_request = relationship("JobRequest", back_populates="user")
 
 
 class Specialization(Base):
@@ -49,7 +50,6 @@ class Employee(Base):
     first_name = Column(String)
     last_name = Column(String)
     phone = Column(String)
-    email = Column(String)
     cv_url = Column(String)
     profile_url = Column(String)
     province = Column(String)
@@ -104,7 +104,6 @@ class Employer(Base):
 class Job(Base):
     __tablename__ = "jobs"
     id = Column((UUID(as_uuid=True)), primary_key=True, default=uuid.uuid4)
-    employee_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     employer_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     job_category_id = Column(UUID(as_uuid=True), ForeignKey("job_categories.id"))
     job_sub_category_id = Column(
@@ -113,6 +112,17 @@ class Job(Base):
     start_date = Column(DateTime)
     status = Column(String)
     created_at = Column(DateTime, default=datetime.now)
+
+
+class JobRequest(Base):
+    __tablename__ = "job_requests"
+    id = Column((UUID(as_uuid=True)), primary_key=True, default=uuid.uuid4)
+    employee_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+    job_id = Column(UUID(as_uuid=True), ForeignKey("jobs.id"))
+    application_letter_url = Column(String)
+    status = Column(String)
+    created_at = Column(DateTime, default=datetime.now)
+    user = relationship("User", back_populates="job_request")
 
 
 Base.metadata.create_all(bind=engine)

@@ -2,12 +2,13 @@ from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status,UploadFile
 from typing import Annotated
 from app.internal.models import User
 from app.internal.database import get_db
 from sqlalchemy.orm import Session
 from app.internal.schemas import TokenData
+import os
 
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
@@ -74,6 +75,33 @@ async def get_current_active_user(
 async def get_current_admin_user(
     current_user: Annotated[User, Depends(get_current_user)]
 ):
-    if current_user.role == "admin":
+    if not current_user.role == "admin":
         raise HTTPException(status_code=400, detail="Only Admin User")
     return current_user
+
+
+async def get_current_employee(
+    current_user: Annotated[User, Depends(get_current_user)]
+):
+    if not current_user.role == "employee":
+        raise HTTPException(status_code=400, detail="Only Employee User")
+    return current_user
+
+
+def save_uploaded_cv(cv_file: UploadFile):
+    upload_folder = "employee_files\employee_cv"
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+    file_path = os.path.join(upload_folder, cv_file.filename)
+    with open(file_path, "wb") as buffer:
+        buffer.write(cv_file.file.read())
+    return file_path
+
+def save_uploaded_picture(image_file: UploadFile):
+    upload_folder = "employee_files\employee_profile_picture"
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+    file_path = os.path.join(upload_folder, image_file.filename)
+    with open(file_path, "wb") as buffer:
+        buffer.write(image_file.file.read())
+    return file_path
