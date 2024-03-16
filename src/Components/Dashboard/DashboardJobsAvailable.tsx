@@ -64,6 +64,7 @@ function DashboardStatistics() {
               <th className={!enableBurgerMenu() ? " " : "hidden"}>{" "}</th>
               <th className="text-sm md:text-lg font-light md:font-base">{enableBurgerMenu() ? "JOB DESCRIPTION, CONDITIONS & CONTACTS" : "JOB DESCRIPTION & CONDITIONS"}</th>
               <th className={`text-sm md:text-lg border-l-2 border-black/20 font-light md:font-base ${!enableBurgerMenu() ? " " : "hidden"}`}>CONTACTS</th>
+              <th className={`text-sm md:text-lg border-l-2 border-black/20 font-light md:font-base ${!enableBurgerMenu() ? " " : "hidden"}`}>APPLY</th>
             </tr>
           </thead>
           <tbody className="w-full">
@@ -84,10 +85,21 @@ function DashboardStatistics() {
                         <Check className="text-white" />
                       </div>
                     )}
+                    
                   </div>
                 </td>
                 <td className="h-max p-3 text-justify text-sm font-light flex flex-col"><span>{item.companyName}</span> <span className="font-light">{item.name}</span></td>
                 <td className={`h-max p-3 border-l-2 ${!enableBurgerMenu() ? " " : "flex flex-col gap-3 justify-center"}`}> <span className="text-sm font-light"><strong className="font-bold">Email:</strong> {item.email}</span> <span className="text-sm font-light"><strong className="font-bold"> Tel:</strong>  {item.contact}</span></td>
+                <td>
+                  
+                  <div className="w-full h-max pl-10">
+                    <a href=""
+                      className="bg-green-500 hover:bg-green-500/80 px-10 py-1 rounded-lg text-white"
+                    >
+                      Apply
+                    </a>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>

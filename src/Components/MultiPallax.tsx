@@ -2,6 +2,8 @@ import transparent from "../assets/transparent.png";
 import { useEffect, useState } from "react";
 import formPhoto from "../assets/Services-Background/capacity-building.webp";
 import { useNavigate  } from 'react-router-dom';
+import { useFormik } from "formik";
+import signupSchema from "../Components/Validations/signup"
 
 interface WindowSize {
   width: number;
@@ -27,6 +29,36 @@ function MultiPallax() {
 
   const navigate = useNavigate();
 
+  const {values, errors, handleBlur, touched, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: signupSchema,
+    onSubmit(values, formikHelpers) {
+      fetch("http://localhost:8000/api/v1/create_account",{
+      method: "POST",
+      headers: {
+        'Content-type' : 'application/json'
+      },
+      body: JSON.stringify({
+        username: values.email,
+        password: values.password
+      })
+      })
+      .then(res =>{
+        if (res.ok) {
+          console.log("Account created");
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+    },
+  });
+
+  console.log(errors);
 
   useEffect(() => {
     if(session !== false){
@@ -66,30 +98,29 @@ function MultiPallax() {
       console.log(err);
     }
   }
-  const handleOnSignUp = (event: React.FormEvent<HTMLFormElement>) =>{
-    event.preventDefault();
-    if (password !== "" && confirmPassword !== "") {
-      console.log(firstName,lastName,email,password,confirmPassword);
-      fetch("http://localhost:8000/api/v1/create_account",{
-      method: "POST",
-      headers: {
-        'Content-type' : 'application/json'
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password
-      })
-      })
-      .then(res =>{
-        if (res.ok) {
-          console.log("Account created");
-        }
-      })
-      .catch(err=>{
-        console.log(err);
-      })
+  // const handleOnSignUp = (event: React.FormEvent<HTMLFormElement>) =>{
+  //   event.preventDefault();
+  //   if (password !== "" && confirmPassword !== "") {
+  //     fetch("http://localhost:8000/api/v1/create_account",{
+  //     method: "POST",
+  //     headers: {
+  //       'Content-type' : 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       username: username,
+  //       password: password
+  //     })
+  //     })
+  //     .then(res =>{
+  //       if (res.ok) {
+  //         console.log("Account created");
+  //       }
+  //     })
+  //     .catch(err=>{
+  //       console.log(err);
+  //     })
      
-  }}
+  // }}
 
   const toggleMessage = () => {
     setShowMessage((prevShowMessage) => !prevShowMessage);
@@ -273,66 +304,42 @@ function MultiPallax() {
               <div className="w-[70%] h-max text-xs text-center font-thin text-red-500"></div>
             </div>
             {form ? (
-              <form onSubmit={handleOnSignUp} className="w-full">
-                <div className="w-full flex justify-center items-center mb-4">
-                  <input
-                    value={username}
-                    onChange={(e)=>setUsername(e.target.value)}
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
-                  />
-                </div>
-                <div className="w-full flex justify-center items-center mb-4">
-                  <input
-                    value={firstName}
-                    onChange={(e)=>setFirstName(e.target.value)}
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
-                  />
-                </div>
-                <div className="w-full flex justify-center items-center mb-4">
-                  <input
-                    value={lastName}
-                    onChange={(e)=>setLastName(e.target.value)}
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name"
-                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
-                  />
-                </div>
-                <div className="w-full flex justify-center items-center mb-4">
+              <form onSubmit={handleSubmit} className="w-full">
+                <div className="w-full justify-center items-center text-center mb-4 block">
                   <input
                     type="email"
-                    value={email}
-                    onChange={(e)=>setEmail(e.target.value)}
+                    value={values.email}
+                    // onChange={(e)=>setEmail(e.target.value)}
+                    onChange={handleChange}
                     name="email"
-                    placeholder="Email"
-                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
+                    placeholder="Enter your email"
+                    className={errors.email ? "input-error w-[70%] p-2 border bg-gray-200 outline-none rounded": "w-[70%] p-2 border bg-gray-200 outline-none rounded"}
                   />
+                  {errors.email && <p className="text-red-700">{errors.email}</p>}
                 </div>
-                <div className="w-full flex justify-center items-center mb-4">
+                <div className="w-full justify-center items-center text-center mb-4 block">
                   <input
                     type="password"
                     name="password"
-                    value={password}
-                    onChange={(e)=>setPassword(e.target.value)}
+                    value={values.password}
+                    // onChange={(e)=>setPassword(e.target.value)}
+                    onChange={handleChange}
                     placeholder="Password"
-                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
+                    className={errors.password ? "input-error w-[70%] p-2 border bg-gray-200 outline-none rounded": "w-[70%] p-2 border bg-gray-200 outline-none rounded"}
                   />
+                  {errors.password && <p className="text-red-700">{errors.password}</p>}
                 </div>
-                <div className="w-full flex justify-center items-center mb-4">
+                <div className="w-full justify-center items-center text-center mb-4 block">
                   <input
                     type="password"
-                    value={confirmPassword}
-                    onChange={(e)=>setConfirmPassword(e.target.value)}
+                    value={values.confirmPassword}
+                    // onChange={(e)=>setConfirmPassword(e.target.value)}
+                    onChange={handleChange}
                     name="confirmPassword"
                     placeholder="Confirm Password"
-                    className="w-[70%] p-2 border bg-gray-200 outline-none rounded"
+                    className={errors.confirmPassword ? "input-error w-[70%] p-2 border bg-gray-200 outline-none rounded": "w-[70%] p-2 border bg-gray-200 outline-none rounded"}
                   />
+                  {errors.confirmPassword && <p className="text-red-700">{errors.confirmPassword}</p>}
                 </div>
 
                 <div className="w-full flex justify-center items-center mb-4">
