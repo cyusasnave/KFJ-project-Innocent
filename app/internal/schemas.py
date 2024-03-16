@@ -83,3 +83,11 @@ class SpecializationModel(BaseModel):
 class SpecializationView(BaseModel):
     id: UUID
     name: str
+    
+class JobCategoryModel(BaseModel):
+    category: str
+    
+    
+class JobCategoryView(BaseModel):
+    id: UUID
+    category: str

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import users, employees, employers
+from app.routers import users, employees, employers,jobs
 
 
 app = FastAPI(
@@ -9,3 +9,4 @@ app = FastAPI(
 
 app.include_router(users.router)
 app.include_router(employees.router)
+app.include_router(jobs.router)
