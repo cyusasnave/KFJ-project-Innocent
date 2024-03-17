@@ -14,6 +14,7 @@ import DashboardUsers from './Components/Dashboard/Dashboardusers.tsx';
 import DashboardJobRequest from './Components/Dashboard/DashboardJobRequest.tsx';
 import DashboardSettings from './Components/Dashboard/DashboardSettings.tsx';
 import DashboardHelp from './Components/Dashboard/DashboardHelp.tsx';
+import DashboardBrowseJob from './Components/Dashboard/DashboardBrowseJob.tsx';
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: "dashboard/help", // Corrected path with leading forward slash
     element: <DashboardHelp />
+  },
+  {
+    path: "dashboard/list/:id",
+    element: <DashboardBrowseJob />
   }
 ]);
 
