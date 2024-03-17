@@ -5,7 +5,6 @@ from app.crud import (
     get_password_hash,
     get_current_admin_user,
     create_access_token,
-    get_user,
     get_current_active_user,
     verify_password,
     get_current_user,
@@ -25,7 +24,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 @router.post("/api/v1/create_account", response_model=UserView)
 async def create_account(user: UserModel, db: Session = Depends(get_db)):
     hashed_password = get_password_hash(user.password)
-    new_user = User(username=user.username, password=hashed_password, role="admin")
+    new_user = User(email=user.email, password=hashed_password)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -35,7 +34,7 @@ async def create_account(user: UserModel, db: Session = Depends(get_db)):
 # get all users and only user with role of admin is allowed
 @router.get("/api/v1/account/users", response_model=List[UserView])
 async def get_all_users(
-    current_user: Annotated[User, Depends(get_current_admin_user)],
+    current_user: UserModel = Depends(get_current_admin_user),
     db: Session = Depends(get_db),
 ):
     user = db.query(User).all()
@@ -49,7 +48,7 @@ async def change_password(
     current_user: Annotated[User, Depends(get_current_user)],
     db: Session = Depends(get_db),
 ):
-    user = db.query(User).filter(User.username == current_user.username).first()
+    user = db.query(User).filter(User.email == current_user.email).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
 
@@ -70,7 +69,7 @@ async def deactivate_account(
     current_user: Annotated[User, Depends(get_current_user)],
     db: Session = Depends(get_db),
 ):
-    user = db.query(User).filter(User.username == current_user.username).first()
+    user = db.query(User).filter(User.email == current_user.email).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     user.is_active = False
@@ -85,23 +84,23 @@ async def login(
     db: Session = Depends(get_db),
 ):
     print(form_data.username, form_data.password)
-    user = get_user(db, form_data.username)
+    user = db.query(User).filter(User.email == form_data.username).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
     if not verify_password(form_data.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={"sub": user.email}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, " token_type": "bearer"}
