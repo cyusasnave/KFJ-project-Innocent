@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI(
-    docs_url="/", title="KFJ Project API", description="Job Finder API swagger UI"
+    docs_url="/", title="K&FJ Project API", description="Job Finder API swagger UI"
 )
 
 

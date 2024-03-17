@@ -104,7 +104,7 @@ class Employer(Base):
 class Job(Base):
     __tablename__ = "jobs"
     id = Column((UUID(as_uuid=True)), primary_key=True, default=uuid.uuid4)
-    employee_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+    # employee_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     employer_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     job_category_id = Column(UUID(as_uuid=True), ForeignKey("job_categories.id"))
     job_sub_category_id = Column(
