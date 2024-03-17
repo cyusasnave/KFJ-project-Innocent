@@ -1,42 +1,50 @@
 export const jobData = [
  {
-    companyName: "[Company Name]",
+   id: 1,
+    companyName: "Finance & Accounts",
+    description: "Finix loans & funding agency",
     isApproved: true
  },
  {
-    companyName: "[Company Name]",
+   id: 2,
+   companyName: "Assistant Manager",
+   description: "Leve bank ltd",
     isApproved: false
  },
  {
-    companyName: "[Company Name]",
+   id: 3,
+    companyName: "Mechanical Engineer",
+    description: "Conzio construction",
     isApproved: false
  },
  {
-    companyName: "[Company Name]",
+   id: 4,
+    companyName: "Teacher - English",
+    description: "Eduon education",
     isApproved: false
  },
  {
-    companyName: "[Company Name]",
+   id: 1,
+    companyName: "Finance & Accounts",
+    description: "Finix loans & funding agency",
     isApproved: true
  },
  {
-    companyName: "[Company Name]",
+   id: 2,
+   companyName: "Assistant Manager",
+   description: "Leve bank ltd",
     isApproved: false
  },
  {
-    companyName: "[Company Name]",
+   id: 3,
+    companyName: "Mechanical Engineer",
+    description: "Conzio construction",
     isApproved: false
  },
  {
-    companyName: "[Company Name]",
-    isApproved: true
- },
- {
-    companyName: "[Company Name]",
+   id: 4,
+    companyName: "Teacher - English",
+    description: "Eduon education",
     isApproved: false
- },
- {
-    companyName: "[Company Name]",
-    isApproved: true
  },
 ]

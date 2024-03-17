@@ -100,28 +100,28 @@ function DashboardStatistics() {
                           </a>
                         </div>
 
-                        <div className="p-2 w-max">
+                        <div className="p-2">
                           <div className="flex flex-col gap-3">
-                            <h3 className="text-xl text-black/80">
+                            <h3 className="text-lg  text-black/80">
                               {item.companyName}
                             </h3>
                             <span className="text-sm font-light">
                               {item.description}
                             </span>
-                            <ul className="text-sm font-light">
-                              <li className="text-sm font-light">
+                            <ul className="text-xs font-light">
+                              <li className="text-xs font-light">
                                 <span className="text-black/80">
                                   Education:
                                 </span>{" "}
                                 {item.education}
                               </li>
-                              <li className="text-sm font-light">
+                              <li className="text-xs font-light my-1">
                                 <span className="text-black/80">
                                   Experience:{" "}
                                 </span>
                                 {item.experience}
                               </li>
-                              <li className="text-sm font-light">
+                              <li className="text-xs font-light">
                                 <span className="text-black/80">
                                   Location:{" "}
                                 </span>
@@ -157,7 +157,7 @@ function DashboardStatistics() {
               </div>
               {/* navigation buttons */}
               {totalPages > 1 && (
-                <div className="flex gap-3 my-10 mx-5">
+                <div className="flex flex-wrap gap-3 my-10 mx-5">
                   <button
                     onClick={handlePrevPage}
                     className="shadow-inner bg-red-600/70 hover:bg-red-600/50 px-5 py-2 text-white gap-3 text-sm text-center"

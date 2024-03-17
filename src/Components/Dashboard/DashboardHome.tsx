@@ -1,5 +1,5 @@
 import DashboardHomeNav from "./DashboardHomeNav";
-import { Bell, X } from "lucide-react";
+import { Bell, Check } from "lucide-react";
 import { selectedJob } from "../../Data/UserDashboardData";
 import { useEffect, useState } from "react";
 import SignUp from "./SignUp";
@@ -102,7 +102,7 @@ function DashboardHome() {
               <p className="font-thin">
                 Save and Organize Preferred Listings{" "}
                 <span className="text-xs">
-                  (Here is a list of all your saved job)
+                  (Here is a list of all your approved job)
                 </span>
               </p>
               <div
@@ -122,13 +122,13 @@ function DashboardHome() {
                           {index + 1}. &nbsp; {job}
                         </h4>
                         <button
-                          className={`bg-red-500/20 py-1 ${
+                          className={`bg-green-500/20 py-1 ${
                             enableBurgerMenu()
                               ? "px-2 h-[40px]"
                               : "px-2 h-[40px]"
                           } rounded hover:bg-red-500/30`}
                         >
-                          {!enableBurgerMenu() ? "Remove" : <X />}
+                          {!enableBurgerMenu() ? "Approved" : <Check />}
                         </button>
                       </div>
                     ))
