@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import DashboardHomeNav from "./DashboardHomeNav";
 import { tableData } from "../../Data/jobAvailaibleTableData";
 import { Link } from "react-router-dom";
 
+
 function DashboardStatistics() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [data,setData] = useState([])
   const itemsPerPage = 6;
   const totalPages = Math.ceil(tableData.length / itemsPerPage);
 
@@ -20,6 +22,21 @@ function DashboardStatistics() {
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
+
+  useEffect(()=>{
+    const fetchData = async() =>{
+      const res = await fetch("http://localhost:8000/api/v1/jobs/data/all")
+      if (res.ok) {
+        const resData = await res.json()
+        setData(resData)
+      }
+      else{
+        const resError = await res.json()
+        console.log(resError.detail);
+      }
+    }
+    fetchData()
+  },[])
 
   return (
     <div className="flex gap-1 md:gap-5">
