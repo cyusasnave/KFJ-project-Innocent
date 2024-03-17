@@ -28,12 +28,12 @@ function Footer() {
             <img src={logo} alt="" /* className="w-full h-full" */ />
           </div>
           <div className=" text-lg md:text-2xl font-bold text-black/65">
-            [COMPANY NAME IN FULL]
+            K&FJ ALL CONSULTANTS LTD
           </div>
           <div className="text-xs text-start w-[70%] m-auto pl-1 md:pl-2 text-black/65">
-            [Job description]: Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit. Sed hendrerit magna quis risus sodales, eget
-            eleifend nunc bibendum.
+          To set up a conducive working environment to 
+          defend the economic and social interests for 
+          both employers and employees.
           </div>
           {/* Social media */}
           <div className="flex items-center gap-3">

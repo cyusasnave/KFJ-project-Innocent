@@ -68,10 +68,9 @@ function MultiPallax() {
     }
     console.log(authenticated);
   }, []);
-  
+
   const handleOnSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(loginUsername, loginPassword);
     try{
       const response = await fetch("http://localhost:8000/token", {
       method: "POST",
@@ -83,7 +82,6 @@ function MultiPallax() {
     if (response.ok) {
       const token = await response.json()
       sessionStorage.setItem("token", JSON.stringify(token))
-      // console.log("login successfull");
       setAuthenticated(true);
       const authenticated = true;
       sessionStorage.setItem("isAuthenticated", authenticated.toString());
@@ -98,6 +96,7 @@ function MultiPallax() {
       console.log(err);
     }
   }
+
   // const handleOnSignUp = (event: React.FormEvent<HTMLFormElement>) =>{
   //   event.preventDefault();
   //   if (password !== "" && confirmPassword !== "") {
