@@ -7,6 +7,9 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+
+// User dashboard imports component
+
 import SignUp from './Components/Dashboard/SignUp.tsx';
 import DashboardHome from './Components/Dashboard/DashboardHome.tsx';
 import DashboardStatistics from './Components/Dashboard/DashboardJobsAvailable.tsx';
@@ -15,6 +18,17 @@ import DashboardJobRequest from './Components/Dashboard/DashboardJobRequest.tsx'
 import DashboardSettings from './Components/Dashboard/DashboardSettings.tsx';
 import DashboardHelp from './Components/Dashboard/DashboardHelp.tsx';
 import DashboardBrowseJob from './Components/Dashboard/DashboardBrowseJob.tsx';
+
+// Employer dashboard import components
+
+import DashboardEmpoyerHome from './Components/EmployerDashboard/DashboardEmployerHome.tsx';
+import DashboardEmployerStatistics from './Components/EmployerDashboard/DashboardEmployerJobsAvailable.tsx';
+import DashboardEmployerUsers from './Components/EmployerDashboard/DashboardEmployerusers.tsx';
+import DashboardEmployerJobRequest from './Components/EmployerDashboard/DashboardEmployerJobRequest.tsx';
+import DashboardEmployerSettings from './Components/EmployerDashboard/DashboardEmployerSettings.tsx';
+import DashboardEmployerHelp from './Components/EmployerDashboard/DashboardEmployerHelp.tsx';
+import DashboardEmployerBrowseJob from './Components/EmployerDashboard/DashboardEmpolyerBrowseJob.tsx';
+import AddJobForm from './Components/EmployerDashboard/AddJobForm.tsx';
 
 const router = createBrowserRouter([
   {
@@ -25,37 +39,75 @@ const router = createBrowserRouter([
       </React.StrictMode>
     ),
   },
+
+   // User dashboard routes
+
   {
-    path: "/signUp", // Corrected path with leading forward slash
+    path: "/signUp",
     element: <SignUp />,
   },
   {
-    path: "/dashboard", // Corrected path with leading forward slash
+    path: "/dashboard",
     element: <DashboardHome />
   },
   {
-    path: "dashboard/list", // Corrected path with leading forward slash
+    path: "dashboard/list",
     element: <DashboardStatistics />
   },
   {
-    path: "dashboard/messages", // Corrected path with leading forward slash
+    path: "dashboard/messages",
     element: <DashboardUsers />
   },
   {
-    path: "dashboard/jobrequests", // Corrected path with leading forward slash
+    path: "dashboard/jobrequests",
     element: <DashboardJobRequest />
   },
   {
-    path: "dashboard/settings", // Corrected path with leading forward slash
+    path: "dashboard/settings",
     element: <DashboardSettings />
   },
   {
-    path: "dashboard/help", // Corrected path with leading forward slash
+    path: "dashboard/help",
     element: <DashboardHelp />
   },
   {
     path: "dashboard/list/:id",
     element: <DashboardBrowseJob />
+  },
+
+    // Employer dashboard routes
+
+  {
+    path: "/dashboard/employer",
+    element: <DashboardEmpoyerHome />
+  },
+  {
+    path: "dashboard/employer/list",
+    element: <DashboardEmployerStatistics />
+  },
+  {
+    path: "dashboard/employer/messages",
+    element: <DashboardEmployerUsers />
+  },
+  {
+    path: "dashboard/employer/jobrequests",
+    element: <DashboardEmployerJobRequest />
+  },
+  {
+    path: "dashboard/employer/settings",
+    element: <DashboardEmployerSettings />
+  },
+  {
+    path: "dashboard/employer/help",
+    element: <DashboardEmployerHelp />
+  },
+  {
+    path: "dashboard/employer/list/:id",
+    element: <DashboardEmployerBrowseJob />
+  },
+  {
+    path: "dashboard/employer/list/form",
+    element: <AddJobForm />
   }
 ]);
 

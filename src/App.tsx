@@ -10,7 +10,9 @@ import CompaniesLogo from "./Data/CompaniesLogo";
 import CompanySlider from "./Components/Companies";
 import Contact from "./Components/Contact";
 import Footer from "./Components/Footer";
-/* import './globals.css'; */ // Import global CSS here
+
+
+
 
 import Header from './Components/Header'; // Adjust the path accordingly
 
