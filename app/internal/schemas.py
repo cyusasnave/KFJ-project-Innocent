@@ -116,7 +116,6 @@ class JobModel(BaseModel):
     job_location: str
     gender: str
 
-
 class JobViewModel(BaseModel):
     employer_id: UUID
     status: str
