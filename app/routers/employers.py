@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
+from fastapi import APIRouter, Depends,  UploadFile,  File,  HTTPException
 from app.internal.models import Employer, User
 from app.crud import get_current_user, get_current_admin_user, get_current_employer
-from app.internal.schemas import EmployerModel, EmployerViewModel
+from app.internal.schemas import EmployerModel,  EmployerViewModel
 from sqlalchemy.orm import Session
 from app.internal.database import get_db
-from typing import Annotated, List
+from typing import Annotated,  List
 
 
 router = APIRouter(tags=["Employers"])

@@ -1,21 +1,31 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends,  HTTPException
 from app.internal.models import (
     JobCategory,
+    
     JobSubCategory,
+    
     JobRequest,
+    
     User,
+    
     Job,
+    
     Employer,
 )
 from app.internal.schemas import (
     JobModel,
+    
     JobViewModel,
+    
     JobCategoryModel,
+    
     JobCategoryView,
+    
     SubJobCategoryModel,
+    
     SubJobCategoryView,
 )
-from app.crud import get_current_admin_user, get_current_employer
+from app.crud import get_current_admin_user,  get_current_employer
 from app.internal.database import get_db
 from sqlalchemy.orm import Session
 from typing import Annotated, List
@@ -91,14 +101,8 @@ async def add_new_job(
     employer = db.query(Employer).filter(Employer.user_id == current_user.id).first()
     if employer is None:
         raise HTTPException(status_code=404, detail="Employer Profile is missing!")
-
-    new_data = Job(
-        employer_id=current_user.id,
-        job_category_id=category.id,
-        job_sub_category_id=sub_category.id,
-        start_date=request.start_date,
-        status=request.status,
-    )
+    
+    new_data = Job(employer_id=current_user.id,job_category_id=category.id,job_sub_category_id=sub_category.id,start_date=request.start_date,status=request.status)
     db.add(new_data)
     db.commit()
     db.refresh(new_data)
@@ -116,8 +120,17 @@ async def get_all_jobs(db: Session = Depends(get_db)):
             "employer_name": employer.name,
             "job_category": job.job_category.category,
             "sub_category": job.sub_job_category.sub_category,
-            "start_date": job.start_date,
             "status": job.status,
+            "deadline": job.deadline,
+            "job_description": job.job_description,
+            "vacancy": job.vacancy,
+            "job_type": job.job_type,
+            "experience": job.experience,
+            "responsibility ": job.responsibility,
+            "experince": job.experince,
+            "job_location": job.job_location,
+            "gender": job.gender,
+            "published_date": job.published_date,
         }
 
         data.append(job_data)
