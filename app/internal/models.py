@@ -26,15 +26,13 @@ class User(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     email = Column(String, unique=True)
     is_active = Column(Boolean, default=True)
-    role = Column(EnumSQL(UserRole), default="employer")
+    role = Column(EnumSQL(UserRole), default="employee")
     created_at = Column(DateTime, default=datetime.now)
     password = Column(String)
     employee = relationship("Employee", back_populates="user", cascade="all, delete")
     employer = relationship("Employer", back_populates="user", cascade="all, delete")
     job_request = relationship("JobRequest", back_populates="user")
     job = relationship("Job", back_populates="user")
-
-
 
 
 class Specialization(Base):
@@ -74,7 +72,6 @@ class JobCategory(Base):
     job = relationship("Job", back_populates="job_category")
 
 
-
 class JobSubCategory(Base):
     __tablename__ = "job_sub_categories"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -85,7 +82,6 @@ class JobSubCategory(Base):
     created_at = Column(DateTime, default=datetime.now)
     job_category = relationship("JobCategory", back_populates="job_sub_category")
     job = relationship("Job", back_populates="sub_job_category")
-
 
 
 class Type_of_employer(str, Enum):
@@ -116,13 +112,19 @@ class Job(Base):
     job_sub_category_id = Column(
         UUID(as_uuid=True), ForeignKey("job_sub_categories.id")
     )
-    start_date = Column(DateTime)
+    deadline = Column(DateTime)
+    job_description = Column(String)
+    vacancy = Column(Integer, default=1)
     status = Column(String)
-    created_at = Column(DateTime, default=datetime.now)
+    job_type = Column(String)
+    experience = Column(String)
+    responsibility = Column(String)
+    job_location = Column(String)
+    gender = Column(String)
+    published_date = Column(DateTime, default=datetime.now)
     job_category = relationship("JobCategory", back_populates="job")
     sub_job_category = relationship("JobSubCategory", back_populates="job")
     user = relationship("User", back_populates="job")
-
 
 
 class JobRequest(Base):

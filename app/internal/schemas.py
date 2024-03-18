@@ -31,7 +31,7 @@ class UserModel(BaseModel):
 class UserView(BaseModel):
     id: UUID
     email: str
-    role:str
+    role: str
 
 
 class Token(BaseModel):
@@ -76,42 +76,59 @@ class EmployeeModel(BaseModel):
     sector: str
     cell: str
     village: str
-    
-    
+
+
 class SpecializationModel(BaseModel):
     name: str
-    
+
 
 class SpecializationView(BaseModel):
     id: UUID
     name: str
-    
+
+
 class JobCategoryModel(BaseModel):
     category: str
-    
-    
+
+
 class JobCategoryView(BaseModel):
     id: UUID
     category: str
-    
+
+
 class SubJobCategoryModel(BaseModel):
     sub_category: str
-    
-    
+
+
 class SubJobCategoryView(BaseModel):
     id: UUID
     sub_category: str
 
+
 class JobModel(BaseModel):
-    start_date: datetime
     status: str
+    deadline: datetime
+    job_description: str
+    vacancy: int
+    job_type: str
+    experience: str
+    responsibility: str
+    job_location: str
+    gender: str
 
 
 class JobViewModel(BaseModel):
     employer_id: UUID
-    start_date: datetime
     status: str
-    
+    deadline: datetime
+    job_description: str
+    vacancy: int
+    job_type: str
+    experience: str
+    responsibility: str
+    job_location: str
+    gender: str
+
     @model_validator(mode="after")
     def start_date_validate(self):
         if self.start_date < datetime.now():
@@ -123,17 +140,17 @@ class JobViewModel(BaseModel):
 
 
 class EmployerModel(BaseModel):
-    type_of_employer:str
-    name :str
-    province : str
-    district:str
-    sector:str
+    type_of_employer: str
+    name: str
+    province: str
+    district: str
+    sector: str
+
 
 class EmployerViewModel(BaseModel):
-    id:UUID
-    type_of_employer:str
-    name :str
-    province : str
-    district:str
-    sector:str
-
+    id: UUID
+    type_of_employer: str
+    name: str
+    province: str
+    district: str
+    sector: str

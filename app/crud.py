@@ -2,7 +2,7 @@ from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
-from fastapi import Depends, HTTPException, status,UploadFile
+from fastapi import Depends, HTTPException, status, UploadFile
 from typing import Annotated
 from app.internal.models import User
 from app.internal.database import get_db
@@ -79,6 +79,7 @@ async def get_current_admin_user(
         raise HTTPException(status_code=400, detail="Only Admin User")
     return current_user
 
+
 async def get_current_employer(
     current_user: Annotated[User, Depends(get_current_user)]
 ):
@@ -103,6 +104,7 @@ def save_uploaded_cv(cv_file: UploadFile):
     with open(file_path, "wb") as buffer:
         buffer.write(cv_file.file.read())
     return file_path
+
 
 def save_uploaded_picture(image_file: UploadFile):
     upload_folder = "employee_files\employee_profile_picture"
