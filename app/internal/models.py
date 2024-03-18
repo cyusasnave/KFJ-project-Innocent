@@ -35,8 +35,6 @@ class User(Base):
     job = relationship("Job", back_populates="user")
 
 
-
-
 class Specialization(Base):
     __tablename__ = "specializations"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -74,7 +72,6 @@ class JobCategory(Base):
     job = relationship("Job", back_populates="job_category")
 
 
-
 class JobSubCategory(Base):
     __tablename__ = "job_sub_categories"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -85,7 +82,6 @@ class JobSubCategory(Base):
     created_at = Column(DateTime, default=datetime.now)
     job_category = relationship("JobCategory", back_populates="job_sub_category")
     job = relationship("Job", back_populates="sub_job_category")
-
 
 
 class Type_of_employer(str, Enum):
@@ -122,7 +118,6 @@ class Job(Base):
     job_category = relationship("JobCategory", back_populates="job")
     sub_job_category = relationship("JobSubCategory", back_populates="job")
     user = relationship("User", back_populates="job")
-
 
 
 class JobRequest(Base):
