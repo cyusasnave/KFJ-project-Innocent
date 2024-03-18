@@ -8,8 +8,9 @@ from app.crud import (
     get_current_active_user,
     verify_password,
     get_current_user,
+    get_current_employer
 )
-from app.internal.models import User
+from app.internal.models import User, Employer
 from app.internal.database import get_db
 from typing import List, Annotated
 from sqlalchemy.orm import Session
@@ -103,4 +104,17 @@ async def login(
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, " token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "user_type": user.role}
+
+
+# Getting a user
+@router.get("/api/v1/account/get_user")
+async def get_user(
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter(User.email == current_user.email).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+    

@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from fastapi import Depends
 from typing import Annotated
 
-DATABASE_URL = "postgresql://postgres:admin@localhost:5432/jobFinder"
+DATABASE_URL = "postgresql://postgres:123@localhost:5432/jobFinder"
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
