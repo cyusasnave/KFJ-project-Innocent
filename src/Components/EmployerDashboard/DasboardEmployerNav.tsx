@@ -37,10 +37,13 @@ const sidebarContext = createContext<SidebarContextType>(
 export default function DashboardNav({ children }: NavChild) {
   const [expanded, setExpanded] = useState(true);
   const [activeItem, setActiveItem] = useState<string | null>(null);
+  const [userData, setUserData] = useState<any>();
 
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
   });
+  console.log(userData);
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -55,6 +58,36 @@ export default function DashboardNav({ children }: NavChild) {
   }, []);
 
   useEffect(() => {
+    // Get current user
+    const token = sessionStorage.getItem('token');
+    // const parsedToken = JSON.parse(token);
+    if (token){
+      const parsedToken = JSON.parse(token);
+      const getUser = async () => {
+        try{
+            const response = await fetch("http://127.0.0.1:8000/api/v1/account/get_user", {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json",
+              'Authorization': `Bearer ${parsedToken.access_token}`
+            }
+          });
+          if (response.ok){
+            const responseData = await response.json()
+            setUserData(responseData);
+          }
+          else{
+            console.log(response.json())
+          }
+        }
+        catch (e){
+          console.log(e);
+        }
+      }
+      getUser();
+    }
+
+
     if (windowSize.width <= 965) { // Adjust the threshold based on your requirement
       setExpanded(false);
     } else {
@@ -95,9 +128,9 @@ export default function DashboardNav({ children }: NavChild) {
             }`}
           >
             <div className="leading-4">
-              <h4 className="font-semibold">Janet Dallern</h4>
+              <h4 className="font-semibold">Omen Dallern</h4>
               <span className="text-xs text-gray-600">
-                Janetdallern@gmail.com
+                {userData && userData.email}
               </span>
             </div>
             <MoreVertical size={20} />

@@ -4,16 +4,30 @@ import { selectedJob } from "../../Data/UserDashboardData";
 import { useEffect, useState } from "react";
 import SignUp from "./SignUp";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface WindowSize {
   width: number;
 }
 function DashboardHome() {
+  const navigate = useNavigate();
+  // Checking if user is authenticated
+  
+  
+
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
   });
 
   useEffect(() => {
+
+    const isAuthenticated = sessionStorage.getItem("isAuthenticated") || false;
+    console.log(isAuthenticated);
+    if (!isAuthenticated){
+      navigate('/')
+    }
+    
+
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth });
     };
@@ -23,6 +37,7 @@ function DashboardHome() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+    
   }, []);
 
   const enableBurgerMenu = (): boolean => {

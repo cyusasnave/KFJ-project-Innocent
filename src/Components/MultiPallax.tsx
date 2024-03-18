@@ -10,12 +10,6 @@ interface WindowSize {
 }
 function MultiPallax() {
   const [showMessage, setShowMessage] = useState(false);
-  const [username,setUsername] = useState("")
-  const [firstName,setFirstName] = useState("")
-  const [lastName,setLastName] = useState("")
-  const [email,setEmail] = useState("")
-  const [password,setPassword] = useState("")
-  const [confirmPassword,setConfirmPassword] = useState("")
 
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -43,8 +37,9 @@ function MultiPallax() {
         'Content-type' : 'application/json'
       },
       body: JSON.stringify({
-        username: values.email,
-        password: values.password
+        email: values.email,
+        password: values.password,
+        confirm_password: values.confirmPassword
       })
       })
       .then(res =>{
@@ -64,15 +59,14 @@ function MultiPallax() {
     if(session !== false){
       setAuthenticated(true);
       sessionStorage.setItem("isAuthenticated", authenticated.toString());
-      navigate("/dashboard")
+      // navigate("/dashboard")
     }
-    console.log(authenticated);
   }, []);
 
   const handleOnSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try{
-      const response = await fetch("http://localhost:8000/token", {
+      const response = await fetch("http://localhost:8000/api/v1/login", {
       method: "POST",
       headers: {
         'Content-type' : 'application/x-www-form-urlencoded'
@@ -85,7 +79,13 @@ function MultiPallax() {
       setAuthenticated(true);
       const authenticated = true;
       sessionStorage.setItem("isAuthenticated", authenticated.toString());
-      navigate("/dashboard")
+
+      if(token.user_type == "employee"){
+        navigate("/dashboard/employee")
+      }
+      else if(token.user_type == "employer"){
+        navigate("/dashboard/employer")
+      }
     }
     else{
       const errorData = await response.json()
@@ -97,6 +97,19 @@ function MultiPallax() {
     }
   }
 
+  // Redirect on authentication
+  const checkAuthentication = () => {
+    const token = sessionStorage.getItem("token");
+    if (token){
+      const parsedToken = JSON.parse(token);
+      if(parsedToken.user_type == "employee"){
+        navigate("/dashboard/employee")
+      }
+      else if(parsedToken.user_type == "employer"){
+        navigate("/dashboard/employer")
+      }
+    }
+  }
   // const handleOnSignUp = (event: React.FormEvent<HTMLFormElement>) =>{
   //   event.preventDefault();
   //   if (password !== "" && confirmPassword !== "") {
@@ -494,6 +507,7 @@ function MultiPallax() {
             data-aos="fade-up"
             data-aos-duration="3000"
             className="z-40 px-10 py-2 bg-indigo-500 border-none rounded-full hover:bg-gradient-to-br from-sky-400/55 to-slate-700/55"
+            onClick={checkAuthentication}
           >
             Join
           </button>

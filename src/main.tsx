@@ -47,31 +47,31 @@ const router = createBrowserRouter([
     element: <SignUp />,
   },
   {
-    path: "/dashboard",
+    path: "/dashboard/employee",
     element: <DashboardHome />
   },
   {
-    path: "dashboard/list",
+    path: "dashboard/employee/list",
     element: <DashboardStatistics />
   },
   {
-    path: "dashboard/messages",
+    path: "dashboard/employee/messages",
     element: <DashboardUsers />
   },
   {
-    path: "dashboard/jobrequests",
+    path: "dashboard/employee/jobrequests",
     element: <DashboardJobRequest />
   },
   {
-    path: "dashboard/settings",
+    path: "dashboard/employee/settings",
     element: <DashboardSettings />
   },
   {
-    path: "dashboard/help",
+    path: "dashboard/employee/help",
     element: <DashboardHelp />
   },
   {
-    path: "dashboard/list/:id",
+    path: "dashboard/employee/list/:id",
     element: <DashboardBrowseJob />
   },
 
