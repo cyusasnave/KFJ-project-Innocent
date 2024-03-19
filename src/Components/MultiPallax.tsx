@@ -66,7 +66,7 @@ function MultiPallax() {
   const handleOnSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try{
-      const response = await fetch("http://localhost:8000/api/v1/login", {
+      const response = await fetch("http://localhost:8000/token", {
       method: "POST",
       headers: {
         'Content-type' : 'application/x-www-form-urlencoded'

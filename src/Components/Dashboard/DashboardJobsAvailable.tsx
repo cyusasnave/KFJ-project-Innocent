@@ -96,7 +96,7 @@ function DashboardStatistics() {
               </div>
               {/* Job card listing */}
               <div className="w-full h-max p-4">
-                {tableData
+                {data
                   .slice(
                     (currentPage - 1) * itemsPerPage,
                     currentPage * itemsPerPage

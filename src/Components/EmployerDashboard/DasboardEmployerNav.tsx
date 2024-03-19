@@ -73,11 +73,11 @@ export default function DashboardNav({ children }: NavChild) {
             }
           });
           if (response.ok){
-            const responseData = await response.json()
+            const responseData = await response.json();
             setUserData(responseData);
           }
           else{
-            console.log(response.json())
+            console.log(response.json());
           }
         }
         catch (e){
@@ -103,7 +103,7 @@ export default function DashboardNav({ children }: NavChild) {
             className={`overflow-hidden transition-all text-3xl font-extrabold text-indigo-800 pl-3 ${
               expanded ? "w-52" : "w-0"
             }`}
-          >{'Welcome'.toUpperCase()}</div>
+          >{'Employer'.toUpperCase()}</div>
           <button
             onClick={() => setExpanded((prev) => !prev)}
             className="p-1 rounded-lg bg-gray-50 hover:bg-gray-100"

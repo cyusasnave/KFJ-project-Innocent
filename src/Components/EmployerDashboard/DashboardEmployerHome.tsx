@@ -97,7 +97,7 @@ function DashboardHome() {
             </GridItem>
           </div>
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-10 p-10">
-            <Link to={"/dashboard/list"}>
+            <Link to={"/dashboard/employer/list"}>
               <div className="h-max md:h-[250px] shadow-lg bg-indigo-200/20 flex justify-center items-center flex-col gap-5 p-5 hover:bg-indigo-300/20 cursor-pointer transition ease-in-out">
                 <h3 className="text-lg md:text-xl font-semibold text-center">
                   View the list of available job opportunities
