@@ -31,7 +31,7 @@ class UserModel(BaseModel):
 class UserView(BaseModel):
     id: UUID
     email: str
-    role: str
+    role:  str
 
 
 class Token(BaseModel):
@@ -119,15 +119,7 @@ class JobModel(BaseModel):
 class JobViewModel(BaseModel):
     employer_id: UUID
     status: str
-    deadline: datetime
-    job_description: str
-    vacancy: int
-    job_type: str
-    experience: str
-    responsibility: str
-    job_location: str
-    gender: str
-
+    
     @model_validator(mode="after")
     def start_date_validate(self):
         if self.start_date < datetime.now():

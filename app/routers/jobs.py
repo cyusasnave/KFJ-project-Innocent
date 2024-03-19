@@ -1,21 +1,31 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends,  HTTPException
 from app.internal.models import (
     JobCategory,
+    
     JobSubCategory,
+    
     JobRequest,
+    
     User,
+    
     Job,
+    
     Employer,
 )
 from app.internal.schemas import (
     JobModel,
+    
     JobViewModel,
+    
     JobCategoryModel,
+    
     JobCategoryView,
+    
     SubJobCategoryModel,
+    
     SubJobCategoryView,
 )
-from app.crud import get_current_admin_user, get_current_employer
+from app.crud import get_current_admin_user,  get_current_employer
 from app.internal.database import get_db
 from sqlalchemy.orm import Session
 from typing import Annotated, List
@@ -96,7 +106,6 @@ async def add_new_job(
         employer_id=current_user.id,
         job_category_id=category.id,
         job_sub_category_id=sub_category.id,
-        status=request.status,
         deadline = request.deadline,
         job_description = request.job_description,
         vacancy = request.vacancy,
@@ -104,8 +113,9 @@ async def add_new_job(
         experience = request.experience,
         responsibility = request.responsibility,
         job_location = request.job_location,
-        gender = request.gender
-    )
+        gender = request.gender,
+        status=request.status
+        )
     db.add(new_data)
     db.commit()
     db.refresh(new_data)

@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
+from fastapi import APIRouter, Depends,  UploadFile,  File,  HTTPException
 from app.internal.models import Employer, User
-from app.crud import get_current_user, get_current_admin_user
-from app.internal.schemas import EmployerModel, EmployerViewModel
+from app.crud import get_current_user, get_current_admin_user, get_current_employer
+from app.internal.schemas import EmployerModel,  EmployerViewModel
 from sqlalchemy.orm import Session
 from app.internal.database import get_db
-from typing import Annotated, List
+from typing import Annotated,  List
 
 
 router = APIRouter(tags=["Employers"])
@@ -43,3 +43,17 @@ async def get_employer(
 ):
     employers = db.query(Employer).all()
     return employers
+
+# Getting Employer Profile
+@router.get("/api/v1/account/get_employer_profile")
+async def get_employer_profile(
+    current_user: Annotated[User, Depends(get_current_employer)],
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter(User.email == current_user.email).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    profile = db.query(Employer).filter(Employer.user_id == user.id)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Employer Profile not found")
+    return profile
