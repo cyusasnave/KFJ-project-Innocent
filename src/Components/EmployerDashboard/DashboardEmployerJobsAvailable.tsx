@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import DashboardHomeNav from "./DashboardEmployerHomeNav";
 import { tableData } from "../../Data/jobAvailaibleTableData";
@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 
 function DashboardStatistics() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [data,setData] = useState([]);
+
   const itemsPerPage = 6;
   const totalPages = Math.ceil(tableData.length / itemsPerPage);
 
@@ -20,6 +22,36 @@ function DashboardStatistics() {
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
+
+  useEffect(() => {
+
+    const token = sessionStorage.getItem("token");
+    if (token){
+      const parsedToken = JSON.parse(token);
+      fetch('http://127.0.0.1:8000/api/v1/jobs/data/employer', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${parsedToken.access_token}`
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+          
+        } else {
+          throw new Error('Failed to fetch data');
+        }
+      })
+      .then(data => {
+        setData(data)
+        console.log(data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    }
+    
+  },[])
 
   return (
     <div className="flex gap-1 md:gap-5">
@@ -87,7 +119,7 @@ function DashboardStatistics() {
               </div>
               {/* Job card listing */}
               <div className="w-full h-max p-4">
-                {tableData
+                {data
                   .slice(
                     (currentPage - 1) * itemsPerPage,
                     currentPage * itemsPerPage
@@ -97,31 +129,23 @@ function DashboardStatistics() {
                       key={index}
                       className="relative p-3 w-full h-max shadow-inner border rounded-br-3xl rounded-tl-3xl rounded-bl-xl rounded-tr-xl overflow-hidden mt-5"
                     >
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-4 w-full h-max">
-                        <div className="w-[60%] md:w-[60%] lg:w-full h-[180px] p-10">
-                          <a href="job-details.html" className="w-1/2 h-full">
-                            <img
-                              src={item.image}
-                              alt="Image"
-                              className="w-full h-full object-fit rounded-br-2xl rounded-tl-2xl"
-                            />
-                          </a>
-                        </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 place-items-center gap-4 w-full h-max">
+                        
 
                         <div className="p-2">
                           <div className="flex flex-col gap-3">
-                            <h3 className="text-lg  text-black/80">
-                              {item.companyName}
+                            <h3 className="text-lg  text-black/80 uppercase">
+                              {item.job_category}
                             </h3>
                             <span className="text-sm font-light">
-                              {item.description}
+                            {item.sub_category}
                             </span>
                             <ul className="text-xs font-light">
                               <li className="text-xs font-light">
                                 <span className="text-black/80">
-                                  Education:
+                                  Location:
                                 </span>{" "}
-                                {item.education}
+                                {item.job_location}
                               </li>
                               <li className="text-xs font-light my-1">
                                 <span className="text-black/80">
@@ -131,9 +155,9 @@ function DashboardStatistics() {
                               </li>
                               <li className="text-xs font-light">
                                 <span className="text-black/80">
-                                  Location:{" "}
+                                  Prefered Gender:{" "}
                                 </span>
-                                {item.location}
+                                {item.gender}
                               </li>
                             </ul>
                           </div>
@@ -141,7 +165,7 @@ function DashboardStatistics() {
                         <div className="p-3 flex flex-col gap-5 justify-center items-center">
                           <Link to={`/dashboard/employer/list/${item.id}`}>
                             <a
-                              href="job-details.html"
+                              // href="job-details.html"
                               className="shadow-inner bg-indigo-600 hover:bg-indigo-600/50 px-2 py-2 text-white gap-3 rounded text-sm text-center"
                             >
                               Browse Job
@@ -155,10 +179,10 @@ function DashboardStatistics() {
                       </div>
                       <div
                         className={`absolute -rotate-45  top-4 -left-16 ${
-                          item.UrgentOrFeatured ? "bg-red-500" : "bg-indigo-600"
+                          item.status == "urgent" ? "bg-red-500" : "bg-indigo-600"
                         } text-white text-center text-sm py-2 w-[200px]`}
                       >
-                        {item.UrgentOrFeatured ? "Urgent" : "Featured"}
+                        {item.status}
                       </div>
                     </div>
                   ))}
