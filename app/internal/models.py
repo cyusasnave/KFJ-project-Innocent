@@ -85,7 +85,7 @@ class JobSubCategory(Base):
 
 
 class Type_of_employer(str, Enum):
-    campany = "campany"
+    company = "company"
     individual = "individual"
 
 
@@ -93,7 +93,7 @@ class Employer(Base):
     __tablename__ = "employers"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"))
-    type_of_employer = Column(EnumSQL(Type_of_employer))
+    type_of_employer = Column(EnumSQL(Type_of_employer), default="individual")
     name = Column(String)
     logo_url = Column(String)
     contract_url = Column(String)

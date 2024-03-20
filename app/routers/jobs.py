@@ -140,7 +140,6 @@ async def get_all_jobs(db: Session = Depends(get_db)):
             "job_type": job.job_type,
             "experience": job.experience,
             "responsibility ": job.responsibility,
-            "experince": job.experince,
             "job_location": job.job_location,
             "gender": job.gender,
             "published_date": job.published_date,
@@ -148,4 +147,27 @@ async def get_all_jobs(db: Session = Depends(get_db)):
 
         data.append(job_data)
 
+    return data
+
+@router.get("/api/v1/job/{job_id}")
+async def get_single_job(job_id: str, db: Session = Depends(get_db)):
+    job = db.query(Job).filter(Job.id == job_id).first()
+    # data = []
+    if job is None:
+        raise HTTPException(status_code=404, detail="Job does not exist!")
+    data = {
+        "id": job.id,
+        "category": job.job_category.category,
+        "sub_category": job.sub_job_category.sub_category,
+        "status": job.status,
+        "deadline": job.deadline,
+        "job_description": job.job_description,
+        "vacancy": job.vacancy,
+        "job_type": job.job_type,
+        "experience": job.experience,
+        "responsibility": job.responsibility,
+        "job_location": job.job_location,
+        "gender": job.gender,
+        "published_date": job.published_date,
+    }
     return data
