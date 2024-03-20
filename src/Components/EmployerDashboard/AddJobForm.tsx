@@ -96,7 +96,7 @@ function AddJobForm() {
           </h2>
         </div> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 place-items-center w-full h-max p-5">
-          <div
+          {/* <div
             id="logoContainer"
             className="relative flex flex-col justify-center mb-5 items-center place-items-center h-[300px] w-full max-w-[400px] border-2 rounded-xl"
           >
@@ -122,7 +122,7 @@ function AddJobForm() {
             <div className="absolute -bottom-10 text-sm font-thin">
               Add company Logo
             </div>
-          </div>
+          </div> */}
           <div className="h-max w-full max-w-[600px] border p-5 rounded-lg flex flex-col gap-5 justify-start items-center">
             <input
               type="text"

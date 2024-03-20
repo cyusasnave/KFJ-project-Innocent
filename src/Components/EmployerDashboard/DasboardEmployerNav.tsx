@@ -38,6 +38,7 @@ export default function DashboardNav({ children }: NavChild) {
   const [expanded, setExpanded] = useState(true);
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [userData, setUserData] = useState<any>();
+  const [profile, setProfile] = useState<any>();
 
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
@@ -63,29 +64,65 @@ export default function DashboardNav({ children }: NavChild) {
     // const parsedToken = JSON.parse(token);
     if (token){
       const parsedToken = JSON.parse(token);
-      const getUser = async () => {
-        try{
-            const response = await fetch("http://127.0.0.1:8000/api/v1/account/get_user", {
-            method: "GET",
-            headers: {
-              "Content-type": "application/json",
-              'Authorization': `Bearer ${parsedToken.access_token}`
-            }
-          });
-          if (response.ok){
-            const responseData = await response.json();
-            setUserData(responseData);
+      // const getUser = async () => {
+      //   try{
+      //       const response = await fetch("http://127.0.0.1:8000/api/v1/account/get_user", {
+      //       method: "GET",
+      //       headers: {
+      //         "Content-type": "application/json",
+      //         'Authorization': `Bearer ${parsedToken.access_token}`
+      //       }
+      //     });
+      //     if (response.ok){
+      //       const responseData = await response.json();
+      //       setUserData(responseData);
+      //     }
+      //     else{
+      //       console.log(response.json());
+      //     }
+      //   }
+      //   catch (e){
+      //     console.log(e);
+      //   }
+      // }
+      // getUser();
+    
+      Promise.all([
+        fetch("http://127.0.0.1:8000/api/v1/account/get_user", {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            'Authorization': `Bearer ${parsedToken.access_token}`
           }
-          else{
-            console.log(response.json());
+        }).then(response => response.json()),
+
+        fetch('http://127.0.0.1:8000/api/v1/account/get_employer_profile', {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            'Authorization': `Bearer ${parsedToken.access_token}`
           }
-        }
-        catch (e){
-          console.log(e);
-        }
-      }
-      getUser();
+        }).then(response => response.json())
+        ])
+        .then(([response1, response2]) => {
+            // Process the responses
+            console.log("This is user data", response1);
+            console.log("This is Profile data", response2);
+            setUserData(response1);
+            setProfile(response2);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            // Handle errors
+        });
+  
+    
     }
+
+
+
+
+    
 
 
     if (windowSize.width <= 965) { // Adjust the threshold based on your requirement
@@ -128,7 +165,7 @@ export default function DashboardNav({ children }: NavChild) {
             }`}
           >
             <div className="leading-4">
-              <h4 className="font-semibold">Omen Dallern</h4>
+              <h4 className="font-semibold">{profile && profile.name}</h4>
               <span className="text-xs text-gray-600">
                 {userData && userData.email}
               </span>
