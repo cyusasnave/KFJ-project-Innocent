@@ -29,6 +29,7 @@ function DashboardStatistics() {
       if (res.ok) {
         const resData = await res.json()
         setData(resData)
+        console.log(resData)
       }
       else{
         const resError = await res.json()
@@ -119,11 +120,11 @@ function DashboardStatistics() {
 
                         <div className="p-2">
                           <div className="flex flex-col gap-3">
-                            <h3 className="text-lg  text-black/80">
-                              {item.companyName}
+                            <h3 className="text-lg  text-black/80 uppercase">
+                              {item.job_category}
                             </h3>
                             <span className="text-sm font-light">
-                              {item.description}
+                              {item.sub_category}
                             </span>
                             <ul className="text-xs font-light">
                               <li className="text-xs font-light">
@@ -142,15 +143,15 @@ function DashboardStatistics() {
                                 <span className="text-black/80">
                                   Location:{" "}
                                 </span>
-                                {item.location}
+                                {item.job_location}
                               </li>
                             </ul>
                           </div>
                         </div>
                         <div className="p-3 flex flex-col gap-5 justify-center items-center">
-                          <Link to={`/dashboard/list/${item.id}`} >
+                          <Link to={`/dashboard/employee/list/${item.id}`} >
                           <a
-                            href="job-details.html"
+                            // href="job-details.html"
                             className="shadow-inner bg-indigo-600 hover:bg-indigo-600/50 px-2 py-2 text-white gap-3 rounded text-sm text-center"
                           >
                             Browse Job
@@ -164,10 +165,10 @@ function DashboardStatistics() {
                       </div>
                       <div
                         className={`absolute -rotate-45  top-4 -left-16 ${
-                          item.UrgentOrFeatured ? "bg-red-500" : "bg-indigo-600"
+                          item.status ? "bg-red-500" : "bg-indigo-600"
                         } text-white text-center text-sm py-2 w-[200px]`}
                       >
-                        {item.UrgentOrFeatured ? "Urgent" : "Featured"}
+                        {item.status ? "urgent" : "Featured"}
                       </div>
                     </div>
                   ))}

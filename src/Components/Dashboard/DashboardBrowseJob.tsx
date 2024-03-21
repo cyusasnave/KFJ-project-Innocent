@@ -1,22 +1,47 @@
 import { useParams } from "react-router-dom";
 import { tableData } from "../../Data/jobAvailaibleTableData";
 import DashboardHomeNav from "./DashboardHomeNav";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 function DashboardBrowseJob() {
   const { id } = useParams<{ id: string }>();
+  const [blogData,setData] = useState([]);
+
 
   if (id === undefined) {
     return <div>Invalid URL: No job id provided</div>;
   }
 
-  const jobId = parseInt(id);
+  // const jobId = parseInt(id);
 
-  const job = tableData.find((item) => item.id === jobId);
+  const job = blogData
+  // console.log("This is data", data);
 
-  if (!job) {
-    return <div>Job not found</div>;
-  }
+  // if (!job) {
+  //   return <div>Job not found</div>;
+  // }
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/v1/job/${id}`, {
+        method: 'GET'
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+          
+        } else {
+          throw new Error('Failed to fetch data');
+        }
+      })
+      .then(data => {
+        setData(data)
+        console.log("This is data", data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+  }, [])
 
   const facebookSVG = (
     <svg
@@ -220,21 +245,12 @@ function DashboardBrowseJob() {
           {/* job information */}
         <div className="w-full md:w-full lg:w-[60%] p-5">
             <div className="relative p-4 w-full h-max shadow-inner border rounded-br-3xl rounded-tl-3xl rounded-bl-xl rounded-tr-xl overflow-hidden mt-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-4 w-full h-max">
-                <div className="w-[60%] md:w-[60%] lg:w-full h-[180px] p-10">
-                  <a href="job-details.html" className="w-1/2 h-full">
-                    <img
-                      src={job.image}
-                      alt="Image"
-                      className="w-full h-full object-fit rounded-br-2xl rounded-tl-2xl"
-                    />
-                  </a>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 place-items-center gap-4 w-full h-max">
                 <div className="p-2 w-max">
                   <div className="flex flex-col gap-3">
-                    <h3 className="text-xl text-black/80">{job.companyName}</h3>
+                    <h3 className="text-xl text-black/80 uppercase">{job.category}</h3>
                     <span className="text-sm font-light">
-                      {job.description}
+                      {job.sub_category}
                     </span>
                     <ul className="text-sm font-light">
                       <li className="text-sm font-light">
@@ -247,7 +263,7 @@ function DashboardBrowseJob() {
                       </li>
                       <li className="text-sm font-light">
                         <span className="text-black/80">Location: </span>
-                        {job.location}
+                        {job.job_location}
                       </li>
                     </ul>
                   </div>
@@ -260,45 +276,45 @@ function DashboardBrowseJob() {
                     Apply now
                   </button>
                   <p className="text-sm font-light">
-                    <span className="text-black/80">Deadline: </span>
+                    <span className="text-black/80">Deadline: <br /></span>
                     {job.deadline}
                   </p>
                 </div>
               </div>
               <div
                 className={`absolute -rotate-45  top-4 -left-16 ${
-                  job.UrgentOrFeatured ? "bg-red-500" : "bg-indigo-600"
+                  job.status == "urgent" ? "bg-red-500" : "bg-indigo-600"
                 } text-white text-center text-sm py-2 w-[200px]`}
               >
-                {job.UrgentOrFeatured ? "Urgent" : "Featured"}
+                {job.status}
               </div>
             </div>
             {/* job contents */}
             <div className="w-full h-max p-5">
               <h3 className="text-3xl my-4">Job description</h3>
               <p className="text-sm text-black/70 font-thin leading-6 text-justify my-4">
-                {job.longDescription}
+                {job.job_description}
               </p>
               <div className="w-full p-3">
                 <h3 className="text-2xl my-4">Responsibilities:</h3>
                 <ul className="p-3">
-                  {job.responsibilities.map((item) => (
+                  {/* {job.responsibilities.map((item) => ( */}
                     <li className="text-sm text-black/70 mb-4 font-thin w-max flex items-center gap-3">
                       <div className="w-[10px] h-[10px] bg-black rounded-full text-black"></div>
-                      {item}
+                      {job.responsibility}
                     </li>
-                  ))}
+                  {/* ))} */}
                 </ul>
               </div>
               <div className="w-full p-3">
                 <h3 className="text-2xl my-4">Experinces requirements:</h3>
                 <ul className="p-3">
-                  {job.experienceList.map((item) => (
+                  {/* {job.experienceList.map((item) => ( */}
                     <li className="text-sm text-black/70 mb-4 font-thin w-max flex items-center gap-3">
                       <div className="w-[10px] h-[10px] bg-black rounded-full text-black"></div>
-                      {item}
+                      {job.experience}
                     </li>
-                  ))}
+                  {/* ))} */}
                 </ul>
               </div>
             </div>
@@ -310,7 +326,7 @@ function DashboardBrowseJob() {
               <div className="bg-indigo-200 w-full h-[50px] flex items-center rounded-tl-2xl rounded-tr-2xl">
                 <h3 className="text-xl text-black/60 pl-3">More about us</h3>
               </div>
-              <div className="h-[100px] flex justify-center items-center gap-5 border rounded-bl-2xl rounded-br-2xl">
+              {/* <div className="h-[100px] flex justify-center items-center gap-5 border rounded-bl-2xl rounded-br-2xl">
                 <a
                   href={job.socialMedia.facebook}
                   target="blank"
@@ -339,7 +355,7 @@ function DashboardBrowseJob() {
                 >
                   {twitterSVG}
                 </a>
-              </div>
+              </div> */}
             </div>
             {/* job types card */}
             <div className="w-full h-max shadow-inner rounded-2xl">
@@ -353,15 +369,15 @@ function DashboardBrowseJob() {
                       <h5 className="font-bold text-black/60">
                         Published date:{" "}
                       </h5>
-                      {job.publishedDate}
+                      {job.published_date}
                     </div>
                   </label>
                 </li>
                 <li className="w-full">
                   <label className="w-full flex justify-between">
                     <div className="flex gap-2 font-light">
-                      <h5 className="font-bold text-black/60">Vacancy: </h5>
-                      {job.vacancies}
+                      <h5 className="font-bold text-black/60">Places Available: </h5>
+                      {job.vacancy}
                     </div>
                   </label>
                 </li>
@@ -369,7 +385,7 @@ function DashboardBrowseJob() {
                   <label className="w-full flex justify-between">
                     <div className="flex gap-2 font-light">
                       <h5 className="font-bold text-black/60">Job type: </h5>
-                      {job.jobType}
+                      {job.job_type}
                     </div>
                   </label>
                 </li>
@@ -387,7 +403,7 @@ function DashboardBrowseJob() {
                       <h5 className="font-bold text-black/60">
                         Job location:{" "}
                       </h5>
-                      {job.location}
+                      {job.job_location}
                     </div>
                   </label>
                 </li>
@@ -396,6 +412,14 @@ function DashboardBrowseJob() {
                     <div className="flex gap-2 font-light">
                       <h5 className="font-bold text-black/60">Category: </h5>
                       {job.category}
+                    </div>
+                  </label>
+                </li>
+                <li className="w-full">
+                  <label className="w-full flex justify-between">
+                    <div className="flex gap-2 font-light">
+                      <h5 className="font-bold text-black/60">Sub Category: </h5>
+                      {job.sub_category}
                     </div>
                   </label>
                 </li>

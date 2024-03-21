@@ -2,6 +2,7 @@ import {
   BarChart3,
   LayoutDashboard,
   LifeBuoy,
+  LogOut,
   Package,
   Settings,
   UserCircle,
@@ -18,6 +19,7 @@ function DashboardHomeNav() {
         <hr className="my-3" />
         <NavItem icon={<Settings size={20} />} title="Settings" link='/dashboard/employer/settings' alert />
         <NavItem icon={<LifeBuoy size={20} />} title="Help" link='/dashboard/employer/help' />
+        <NavItem icon={<LogOut size={20} />} title="Help" link='/dashboard/employer/help' />
       </DasboardNav>
   );
 }

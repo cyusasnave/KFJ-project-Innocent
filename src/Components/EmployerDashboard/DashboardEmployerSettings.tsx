@@ -1,29 +1,38 @@
 import DashboardHomeNav from "./DashboardEmployerHomeNav";
-
-// function DashboardSettings() {
-//   return (
-//     <div className="flex gap-5">
-//       <DashboardHomeNav />
-//       <div>settings</div>
-//     </div>
-//   );
-// }
-
-// export default DashboardSettings;
-
-
-
 import { ImageUp } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ChangeEvent, useState } from "react"; // Import ChangeEvent from react
+import { ChangeEvent, useEffect, useState } from "react"; // Import ChangeEvent from react
 
 interface PreviewImageTypes {
   event: ChangeEvent<HTMLInputElement>; // Use ChangeEvent<HTMLInputElement> instead of Event
   imageDiv: string;
   imagePreviewed: string;
 }
+interface FormData1 {
+  created_at: string;
+  email: string;
+  id: string;
+  is_active: string;
+  password: string;
+  role: string;
+}
+
+interface FormData2 {
+  contract_url: string;
+  created_at: string;
+  district: string;
+  id: string;
+  logo_url: string;
+  name: string;
+  province: string;
+  sector: string;
+  type_of_employer: string;
+  user_id: string;
+}
 
 function DashboardSettings() {
+
+  // To preview the logo
   function previewImage({
     event,
     imageDiv,
@@ -50,39 +59,68 @@ function DashboardSettings() {
     }
   }
 
-  const [jobResponsibilities, setJobResponsibilities] = useState<string[]>([
-    "",
-  ]);
+  // To handle the form
+  
+  const [formData1, setFormData1] = useState<FormData1>({
+    created_at: "",
+    email: "",
+    id: "",
+    is_active: "",
+    password: "",
+    role: "",
+  });
 
-  const handleAddAnother = () => {
-    setJobResponsibilities([...jobResponsibilities, ""]);
-  };
+  const [formData2, setFormData2] = useState<FormData2>({
+    contract_url: "",
+    created_at: "",
+    district: "",
+    id: "",
+    logo_url: "",
+    name: "",
+    province: "",
+    sector: "",
+    type_of_employer: "",
+    user_id: "",
+  });
 
-  const handleResponsibilityChange = (
-    index: number,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const updatedResponsibilities = [...jobResponsibilities];
-    updatedResponsibilities[index] = event.target.value;
-    setJobResponsibilities(updatedResponsibilities);
-  };
+  useEffect(() => {
+    // Get current user
+    const token = sessionStorage.getItem('token');
+    if (token){
+      const parsedToken = JSON.parse(token);
 
-  const [jobExperience, setJobExperience] = useState<string[]>([
-    "",
-  ]);
+      Promise.all([
+        fetch("http://127.0.0.1:8000/api/v1/account/get_user", {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            'Authorization': `Bearer ${parsedToken.access_token}`
+          }
+        }).then(response => response.json()),
 
-  const handleAddAnotherExperience = () => {
-    setJobExperience([...jobExperience, ""]);
-  };
-
-  const handleExperienceChange = (
-    index: number,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const updatedExperience = [...jobExperience];
-    updatedExperience[index] = event.target.value;
-    setJobExperience(updatedExperience);
-  };
+        fetch('http://127.0.0.1:8000/api/v1/account/get_employer_profile', {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            'Authorization': `Bearer ${parsedToken.access_token}`
+          }
+        }).then(response => response.json())
+        ])
+        .then(([response1, response2]) => {
+            // Process the responses
+            console.log("These are form 1", response1);
+            console.log("These are form 2", response2);
+            setFormData1(response1);
+            setFormData2(response2);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            // Handle errors
+        });
+  
+    
+    }
+  }, [])
 
   return (
     <div
@@ -112,150 +150,81 @@ function DashboardSettings() {
             Add Job
           </h2>
         </div> */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 place-items-center w-full h-max p-5">
+        <div className="flex gap-8 justify-center w-full h-max p-5">
           <div
-            id="logoContainer"
-            className="relative flex flex-col justify-center mb-5 items-center place-items-center h-[300px] w-full max-w-[400px] border-2 rounded-xl"
-          >
-            <input
-              type="file"
-              name=""
-              id=""
-              className="w-full h-full opacity-0 z-50"
-              onChange={(e) =>
-                previewImage({
-                  event: e,
-                  imageDiv: "imageAddLog",
-                  imagePreviewed: "logoContainer",
-                })
-              }
-            />
-            <div
-              id="imageAddLog"
-              className="absolute w-[100px] h-[100px] bg-blue-800 p-5 rounded-full"
+              id="logoContainer"
+              className="relative flex flex-col justify-center mb-5 items-center place-items-center h-[300px] w-full max-w-[400px] border-2 rounded-xl"
             >
-              <ImageUp className="w-full h-full text-white" />
-            </div>
-            <div className="absolute -bottom-10 text-sm font-thin">
-              Add company Logo
-            </div>
-          </div>
-          <div className="h-max w-full max-w-[600px] border p-5 rounded-lg flex flex-col gap-5 justify-start items-center">
-            <input
-              type="text"
-              placeholder="Company Name"
-              className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
-            />
-            <input
-              type="text"
-              placeholder="Job Position"
-              className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
-            />
-            <input
-              type="date"
-              placeholder="Job Position"
-              className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
-            />
-            <input
-              type="number"
-              min={0}
-              placeholder="Vacancy per year"
-              className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
-            />
-            <div className="w-[90%]">
-              <label htmlFor="">Job type:</label>
-              <select className="font-light w-full py-3 px-4 border-b-2 w-[90%] outline-none">
-                <option value="">Daily</option>
-                <option value="">Part-Time</option>
-                <option value="">Full-Time</option>
-              </select>
-            </div>
-          </div>
-          <div className="h-max w-full max-w-[600px] border p-5 rounded-lg flex flex-col gap-5 justify-start items-center p-3 pt-5">
-            <input
-              type="text"
-              placeholder="Job Location"
-              className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
-            />
-            <input
-              type="text"
-              placeholder="Job Category"
-              className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
-            />
-            <input
-              type="number"
-              placeholder="Year of experience required"
-              className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
-            />
-            <div className="w-[90%]">
-              <label htmlFor="">Education:</label>
-              <select className="font-light w-full py-3 px-4 border-b-2 w-[90%] outline-none">
-                <option value="">BSc / PhD</option>
-                <option value="">BA / JD</option>
-                <option value="">BEng / MBA</option>
-                <option value="">BFA / MFA</option>
-                <option value="">BCom / CA</option>
-                <option value="">BTech / MS</option>
-                <option value="">LLB / LLM</option>
-                <option value="">MBBS / MD</option>
-                <option value="">BPharm / PharmD</option>
-                <option value="">BArch / MArch</option>
-              </select>
-            </div>
-            <div className="w-[90%]">
-              <label htmlFor="">Gender:</label>
-              <select className="font-light w-full py-3 px-4 border-b-2 w-[90%] outline-none">
-                <option value="">Male</option>
-                <option value="">Female</option>
-                <option value="">Both</option>
-              </select>
-            </div>
-          </div>
-          <div className="h-[400px] w-full max-w-[600px] border p-5 rounded-lg flex flex-col gap-5 p-3 pt-5 overflow-auto">
-            {jobResponsibilities.map((responsibility, index) => (
               <input
-                key={index}
-                type="text"
-                placeholder="Add Job Responsibilities"
-                className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
-                value={responsibility}
-                onChange={(event) => handleResponsibilityChange(index, event)}
+                type="file"
+                name=""
+                id=""
+                className="w-full h-full opacity-0 z-50"
+                onChange={(e) =>
+                  previewImage({
+                    event: e,
+                    imageDiv: "imageAddLog",
+                    imagePreviewed: "logoContainer",
+                  })
+                }
               />
-            ))}
-            <div className="w-full">
-              <button
-                type="button"
-                className="border bg-cyan-800 text-white px-10 py-2 rounded-lg hover:bg-cyan-800/80 w-full"
-                onClick={handleAddAnother}
+              <div
+                id="imageAddLog"
+                className="absolute w-[100px] h-[100px] bg-blue-800 p-5 rounded-full"
               >
-                Add Another
-              </button>
+                <ImageUp className="w-full h-full text-white" />
+              </div>
+              <div className="absolute -bottom-10 text-sm font-thin">
+                Add company Logo
+              </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full h-max p-5">
+          <div className="h-[700px] w-full max-w-[600px] border p-5 rounded-lg flex flex-col gap-5 p-3 pt-5 overflow-auto">
+            <h2 className="uppercase">Employer Information</h2>
+            <label htmlFor="" className="italic">Company Name</label>
+              <input
+                type="text"
+                placeholder="Company Name"
+                value={formData2.name}
+                className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
+              />
+            <label htmlFor="" className="italic">Email</label>
+              <input
+                type="text"
+                placeholder="Company Name"
+                value={formData1.email}
+                className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
+              />
+            <label htmlFor="" className="italic">Province</label>
+              <input
+                type="text"
+                placeholder="Company Name"
+                value={formData2.province}
+                className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
+              />
+            <label htmlFor="" className="italic">District</label>
+              <input
+                type="text"
+                placeholder="Company Name"
+                value={formData2.district}
+                className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
+              />
+            <label htmlFor="" className="italic">Sector</label>
+              <input
+                type="text"
+                placeholder="Company Name"
+                value={formData2.sector}
+                className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
+              />
+
+            <div className="w-full h-[100px] flex md:justify-end justify-around items-center px-10 md:px-20 gap-5">
+                <button type="submit" className="border bg-green-800 text-white px-10 py-2 rounded-lg hover:bg-cyan-800/80">Update</button>
             </div>
+              
           </div>
 
-          <div className="h-[400px] w-full max-w-[600px] border p-5 rounded-lg flex flex-col gap-5 p-3 pt-5 overflow-auto">
-            {jobExperience.map((experience, index) => (
-              <input
-                key={index}
-                type="text"
-                placeholder="Add extra Job Experience"
-                className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
-                value={experience}
-                onChange={(event) => handleExperienceChange(index, event)}
-              />
-            ))}
-            <div className="w-full">
-              <button
-                type="button"
-                className="border bg-cyan-800 text-white px-10 py-2 rounded-lg hover:bg-cyan-800/80 w-full"
-                onClick={handleAddAnotherExperience}
-              >
-                Add Another
-              </button>
-            </div>
-          </div>
-
-          <div className="h-[400px] w-full max-w-[600px] border rounded-lg">
+          <div className="h-[700px] w-full max-w-[600px] border rounded-lg">
             <textarea name="" id="" className="w-full h-full bg-black/5 resize-none font-light p-5  outline-none" placeholder="Job description here"></textarea>
           </div>
           

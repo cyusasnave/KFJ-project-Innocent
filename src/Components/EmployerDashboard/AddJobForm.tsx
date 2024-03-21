@@ -1,6 +1,6 @@
 import { ImageUp } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ChangeEvent, useState } from "react"; // Import ChangeEvent from react
+import { ChangeEvent, useEffect, useState } from "react"; // Import ChangeEvent from react
 
 interface PreviewImageTypes {
   event: ChangeEvent<HTMLInputElement>; // Use ChangeEvent<HTMLInputElement> instead of Event
@@ -8,7 +8,12 @@ interface PreviewImageTypes {
   imagePreviewed: string;
 }
 
+
 function AddJobForm() {
+
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+
   function previewImage({
     event,
     imageDiv,
@@ -68,6 +73,25 @@ function AddJobForm() {
     updatedExperience[index] = event.target.value;
     setJobExperience(updatedExperience);
   };
+
+
+  useEffect(() => {
+    Promise.all([
+      fetch("http://127.0.0.1:8000/api/v1/jobs/category/data/all")
+      .then(response => response.json()),
+
+      fetch('http://127.0.0.1:8000/api/v1/jobs/sub_category/data/all')
+      .then(response => response.json())
+      ])
+      .then(([response1, response2]) => {
+          setCategories(response1);          
+          setSubCategories(response2);
+          
+      })
+      .catch(error => {
+          console.error('Error fetching data:', error);
+      });
+  }, [])
 
   return (
     <div
@@ -171,18 +195,19 @@ function AddJobForm() {
               className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
             />
             <div className="w-[90%]">
-              <label htmlFor="">Education:</label>
+              <label htmlFor="">Job Category:</label>
               <select className="font-light w-full py-3 px-4 border-b-2 w-[90%] outline-none">
-                <option value="">BSc / PhD</option>
-                <option value="">BA / JD</option>
-                <option value="">BEng / MBA</option>
-                <option value="">BFA / MFA</option>
-                <option value="">BCom / CA</option>
-                <option value="">BTech / MS</option>
-                <option value="">LLB / LLM</option>
-                <option value="">MBBS / MD</option>
-                <option value="">BPharm / PharmD</option>
-                <option value="">BArch / MArch</option>
+                {categories.map((item, index) => (
+                  <option value={item.id}>{item.category}</option>
+                ))}
+              </select>
+            </div>
+            <div className="w-[90%]">
+              <label htmlFor="">Job Sub Category:</label>
+              <select className="font-light w-full py-3 px-4 border-b-2 w-[90%] outline-none">
+                {subCategories.map((item, index) => (
+                  <option value={item.id}>{item.sub_category}</option>
+                ))}
               </select>
             </div>
             <div className="w-[90%]">

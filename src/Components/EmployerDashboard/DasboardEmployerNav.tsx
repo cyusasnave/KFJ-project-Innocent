@@ -1,6 +1,9 @@
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+
 
 interface NavChild {
   children: ReactNode;
@@ -39,11 +42,11 @@ export default function DashboardNav({ children }: NavChild) {
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [userData, setUserData] = useState<any>();
   const [profile, setProfile] = useState<any>();
+  const navigate = useNavigate();
 
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
   });
-  console.log(userData);
   
 
   useEffect(() => {
@@ -61,32 +64,9 @@ export default function DashboardNav({ children }: NavChild) {
   useEffect(() => {
     // Get current user
     const token = sessionStorage.getItem('token');
-    // const parsedToken = JSON.parse(token);
     if (token){
       const parsedToken = JSON.parse(token);
-      // const getUser = async () => {
-      //   try{
-      //       const response = await fetch("http://127.0.0.1:8000/api/v1/account/get_user", {
-      //       method: "GET",
-      //       headers: {
-      //         "Content-type": "application/json",
-      //         'Authorization': `Bearer ${parsedToken.access_token}`
-      //       }
-      //     });
-      //     if (response.ok){
-      //       const responseData = await response.json();
-      //       setUserData(responseData);
-      //     }
-      //     else{
-      //       console.log(response.json());
-      //     }
-      //   }
-      //   catch (e){
-      //     console.log(e);
-      //   }
-      // }
-      // getUser();
-    
+
       Promise.all([
         fetch("http://127.0.0.1:8000/api/v1/account/get_user", {
           method: "GET",
@@ -102,12 +82,10 @@ export default function DashboardNav({ children }: NavChild) {
             "Content-type": "application/json",
             'Authorization': `Bearer ${parsedToken.access_token}`
           }
-        }).then(response => response.json())
+        })
+        .then(response => response.json())
         ])
         .then(([response1, response2]) => {
-            // Process the responses
-            console.log("This is user data", response1);
-            console.log("This is Profile data", response2);
             setUserData(response1);
             setProfile(response2);
         })
@@ -118,7 +96,9 @@ export default function DashboardNav({ children }: NavChild) {
   
     
     }
-
+    else{
+      navigate("/");
+    }
 
 
 

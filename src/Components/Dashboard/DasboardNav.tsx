@@ -1,6 +1,9 @@
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+
 
 interface NavChild {
   children: ReactNode;
@@ -37,10 +40,14 @@ const sidebarContext = createContext<SidebarContextType>(
 export default function DashboardNav({ children }: NavChild) {
   const [expanded, setExpanded] = useState(true);
   const [activeItem, setActiveItem] = useState<string | null>(null);
+  const [userData, setUserData] = useState<any>();
+  const [profile, setProfile] = useState<any>();
+  const navigate = useNavigate();
 
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
   });
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -55,6 +62,45 @@ export default function DashboardNav({ children }: NavChild) {
   }, []);
 
   useEffect(() => {
+    // Get current user
+    const token = sessionStorage.getItem('token');
+    if (token){
+      const parsedToken = JSON.parse(token);
+
+      Promise.all([
+        fetch("http://127.0.0.1:8000/api/v1/account/get_user", {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            'Authorization': `Bearer ${parsedToken.access_token}`
+          }
+        }).then(response => response.json()),
+
+        fetch('http://127.0.0.1:8000/api/v1/account/get_employee_profile', {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            'Authorization': `Bearer ${parsedToken.access_token}`
+          }
+        })
+        .then(response => response.json())
+        ])
+        .then(([response1, response2]) => {
+            setUserData(response1);
+            setProfile(response2);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            // Handle errors
+        });
+  
+    
+    }
+    else{
+      navigate("/");
+    }
+
+    
     if (windowSize.width <= 965) { // Adjust the threshold based on your requirement
       setExpanded(false);
     } else {
@@ -70,7 +116,7 @@ export default function DashboardNav({ children }: NavChild) {
             className={`overflow-hidden transition-all text-3xl font-extrabold text-indigo-800 pl-3 ${
               expanded ? "w-52" : "w-0"
             }`}
-          >{'Welcome'.toUpperCase()}</div>
+          >{'Employer'.toUpperCase()}</div>
           <button
             onClick={() => setExpanded((prev) => !prev)}
             className="p-1 rounded-lg bg-gray-50 hover:bg-gray-100"
@@ -95,9 +141,9 @@ export default function DashboardNav({ children }: NavChild) {
             }`}
           >
             <div className="leading-4">
-              <h4 className="font-semibold">Janet Dallern</h4>
+              <h4 className="font-semibold">{profile && profile.first_name} {profile && profile.last_name}</h4>
               <span className="text-xs text-gray-600">
-                Janetdallern@gmail.com
+                {userData && userData.email}
               </span>
             </div>
             <MoreVertical size={20} />
