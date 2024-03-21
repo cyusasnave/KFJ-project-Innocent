@@ -50,9 +50,6 @@ async def get_employer_profile(
     current_user: Annotated[User, Depends(get_current_employer)],
     db: Session = Depends(get_db),
 ):
-    # user = db.query(User).filter(User.email == current_user.email).first()
-    # if user is None:
-    #     raise HTTPException(status_code=404, detail="User not found")
     profile = db.query(Employer).filter(Employer.user_id == current_user.id).first()
     print(profile)
     if profile is None:

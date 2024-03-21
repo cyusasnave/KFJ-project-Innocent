@@ -15,16 +15,16 @@ from typing import Annotated, List
 router = APIRouter(tags=["Employees"])
 
 
-@router.post("/api/v1/employee/profile_info/{specialization_id}")
+@router.post("/api/v1/employee/profile_info")
 async def add_employee_profile(
     request: EmployeeModel,
-    specialization_id: str,
+    # specialization_id: str,
     current_user: Annotated[User, Depends(get_current_employee)],
     db: Session = Depends(get_db),
 ):
     user = Employee(
         user_id=current_user.id,
-        user_specialization=specialization_id,
+        # user_specialization=specialization_id,
         first_name=request.first_name,
         last_name=request.last_name,
         phone=request.phone,
@@ -41,6 +41,18 @@ async def add_employee_profile(
     db.refresh(user)
     return "Personal Information accepted!"
 
+
+# Getting Employer Profile
+@router.get("/api/v1/account/get_employee_profile")
+async def get_employee_profile(
+    current_user: Annotated[User, Depends(get_current_employee)],
+    db: Session = Depends(get_db),
+):
+    profile = db.query(Employee).filter(Employee.user_id == current_user.id).first()
+    print(profile)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Employee Profile not found")
+    return profile
 
 @router.post("/api/v1/employee/add/cv_profile")
 async def add_employee_cv_picture(
