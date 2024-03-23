@@ -1,21 +1,21 @@
 import DashboardHomeNav from "./DashboardEmployerHomeNav";
-import { Bell} from "lucide-react";
+import { Bell, Users} from "lucide-react";
 /* import { selectedJob } from "../../Data/UserDashboardData"; */
 import { useEffect, useState } from "react";
 /* import SignUp from "./SignUpEmployer"; */
 import { Link } from "react-router-dom";
 
-import BarChartComponent from "./BarChart";
-import LineChartComponent from "./LineChart";
+// import BarChartComponent from "./BarChart";
+// import LineChartComponent from "./LineChart";
 
 interface WindowSize {
   width: number;
 }
 
-interface GridItemTypes {
-  title: string;
-  children: JSX.Element;
-}
+// interface GridItemTypes {
+//   title: string;
+//   children: JSX.Element;
+// }
 function DashboardHome() {
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
@@ -34,17 +34,17 @@ function DashboardHome() {
   }, []);
 
   const enableBurgerMenu = (): boolean => {
-    return windowSize.width <= 965; // Enable burger menu for iPad and mobile screens (less than or equal to 768px)
+    return windowSize.width <= 965;
   };
 
-  function GridItem({ title, children }:GridItemTypes) {
-    return (
-      <div className="flex flex-col items-center justify-center p-4 bg-white/50 rounded-xl h-[400px] mt-10">
-        <h3 className="text-2xl font-semibold text-black mb-4">{title}</h3>
-        {children}
-      </div>
-    );
-  }
+  // function GridItem({ title, children }:GridItemTypes) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center p-4 bg-white/50 rounded-xl h-[400px] mt-10">
+  //       <h3 className="text-2xl font-semibold text-black mb-4">{title}</h3>
+  //       {children}
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex">
@@ -74,19 +74,18 @@ function DashboardHome() {
           >
             Welcome to K&JF
           </div>
-          <div className="px-8 md:px-14 lg:px-28 text-center font-thin">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-            consectetur metus ac sapien fermentum, id tincidunt eros mollis. Sed
-            quis turpis sed nunc elementum fermentum. Nulla facilisi. Vivamus
-            sodales massa at tortor condimentum, nec eleifend libero
-            condimentum.
-          </div>
-          <div className="flex justify-center items-center w-full h-max text-2xl ">
-            <div className="text-center mt-10 pt-10 border-t-2 border-indigo-400 w-1/2 md:w-1/3 text-base md:text-regular">
-              Get Started Employer
+          <div className="grid grid-cols-4 gap-3 place-items-center p-4">
+            <div className="border w-full h-[150px] rounded-lg bg-white shadow-inner flex items-center justify-center p-3">
+              <div className="w-1/3 h-max bg-black p-4 rounded-full shadow-inner shadow-white"><Users className="w-full h-full text-white" /></div>
+              <div className="flex flex-1 flex-col gap-3">
+                <div>99+</div>
+              </div>
             </div>
+            <div className="border w-full h-[150px] rounded-lg bg-white shadow-inner">snave</div>
+            <div className="border w-full h-[150px] rounded-lg bg-white shadow-inner">snave</div>
+            <div className="border w-full h-[150px] rounded-lg bg-white shadow-inner">snave</div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-10 max-w-[1400px] mt-5">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-10 max-w-[1400px] mt-5">
 
             <GridItem title="User/Interation">
               <BarChartComponent />
@@ -95,7 +94,7 @@ function DashboardHome() {
             <GridItem title="Blog likes and Comments">
               <LineChartComponent />
             </GridItem>
-          </div>
+          </div> */}
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-10 p-10">
             <Link to={"/dashboard/employer/list"}>
               <div className="h-max md:h-[250px] shadow-lg bg-indigo-200/20 flex justify-center items-center flex-col gap-5 p-5 hover:bg-indigo-300/20 cursor-pointer transition ease-in-out">
