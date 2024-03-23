@@ -1,10 +1,19 @@
 import { FormWrapper } from "./FormWrapper";
 
 type AddressData = {
-  province: string;
-  district: string;
-  sector: string;
   cell: string;
+  created_at: string;
+  cv_url: string;
+  district: string;
+  first_name: string;
+  id: string;
+  last_name: string;
+  phone: string;
+  profile_url: string;
+  province: string;
+  sector: string;
+  user_id: string;
+  user_specialization: string;
   village: string;
 };
 
@@ -13,10 +22,19 @@ type AddressFormProps = AddressData & {
 };
 
 export function AddressForm({
-  province,
-  district,
-  sector,
   cell,
+  created_at,
+  cv_url,
+  district,
+  first_name,
+  id,
+  last_name,
+  phone,
+  profile_url,
+  province,
+  sector,
+  user_id,
+  user_specialization,
   village,
   updateFields,
 }: AddressFormProps) {
@@ -75,6 +93,16 @@ export function AddressForm({
           className={inputStyle}
           placeholder="Village"
           value={village}
+          onChange={(e) => updateFields({ village: e.target.value })}
+        />
+      </div>
+      <div className={inputDiv}>
+        <input
+          required
+          type="text"
+          className={inputStyle}
+          placeholder="Phone"
+          value={phone}
           onChange={(e) => updateFields({ village: e.target.value })}
         />
       </div>

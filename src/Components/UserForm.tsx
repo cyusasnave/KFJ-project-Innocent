@@ -1,10 +1,20 @@
 import { FormWrapper } from "./FormWrapper";
 
 type UserData = {
-  phoneNumber: string;
-  age: string;
-  birthDate: string;
-  NId: string;
+  // cell: string;
+  created_at: string;
+  cv_url: string;
+  // district: string;
+  first_name: string;
+  id: string;
+  last_name: string;
+  // phone: string;
+  profile_url: string;
+  // province: string;
+  // sector: string;
+  user_id: string;
+  user_specialization: string;
+  // village: string;
 };
 
 type UserFormProps = UserData & {
@@ -12,10 +22,20 @@ type UserFormProps = UserData & {
 };
 
 export function UserForm({
-  phoneNumber,
-  age,
-  birthDate,
-  NId,
+  // cell,
+  created_at,
+  cv_url,
+  // district,
+  first_name,
+  id,
+  last_name,
+  // phone,
+  profile_url,
+  // province,
+  // sector,
+  user_id,
+  user_specialization,
+  // village,
   updateFields,
 }: UserFormProps) {
   const inputDiv = `w-full mt-8 flex justify-center items-start flex-col w-full`;
@@ -39,20 +59,20 @@ export function UserForm({
           required
           type="text"
           className={inputStyle}
-          placeholder="Phone Number"
-          value={phoneNumber}
-          onChange={(e) => updateFields({ phoneNumber: e.target.value })}
+          placeholder="First Name"
+          value={first_name}
+          onChange={(e) => updateFields({ first_name: e.target.value })}
         />
       </div>
       <div className={inputDiv}>
         <input
           required
           min={1}
-          type="number"
+          type="text"
           className={inputStyle}
-          placeholder="Age"
-          value={age}
-          onChange={(e) => updateFields({ age: e.target.value })}
+          placeholder="Last Name"
+          value={last_name}
+          onChange={(e) => updateFields({ last_name: e.target.value })}
         />
       </div>
       <div className={inputDiv}>
@@ -60,19 +80,19 @@ export function UserForm({
           htmlFor=""
           className="w-[90%] m-auto text-sm mb-3 text-black pl-2"
         >
-          Birth Date:
+          Specilatization:
         </label>
         <input
           required
           min={1}
-          type="date"
+          type="text"
           className={inputStyle}
           placeholder="Birth date"
-          value={birthDate}
-          onChange={(e) => updateFields({ birthDate: e.target.value })}
+          value={user_specialization}
+          onChange={(e) => updateFields({ user_specialization: e.target.value })}
         />
       </div>
-      <div className={inputDiv}>
+      {/* <div className={inputDiv}>
         <input
           required
           type="text"
@@ -81,7 +101,7 @@ export function UserForm({
           value={NId}
           onChange={(e) => updateFields({ NId: e.target.value })}
         />
-      </div>
+      </div> */}
     </FormWrapper>
   );
 }

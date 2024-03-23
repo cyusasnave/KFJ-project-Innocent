@@ -9,24 +9,91 @@ import { useNavigate } from "react-router-dom";
 interface WindowSize {
   width: number;
 }
+
+
+interface FormData1 {
+  created_at: string;
+  email: string;
+  id: string;
+  is_active: string;
+  password: string;
+  role: string;
+}
+
+interface FormData2 {
+  cell: string;
+  created_at: string;
+  cv_url: string;
+  district: string;
+  first_name: string;
+  id: string;
+  last_name: string;
+  phone: string;
+  profile_url: string;
+  province: string;
+  sector: string;
+  user_id: string;
+  user_specialization: string;
+  village: string;
+}
+
+
+
+
 function DashboardHome() {
+  const [userData, setUserData] = useState<any>();
+  const [profile, setProfile] = useState<FormData2 | null>(null);
+  const [activateForm, setActivateform] = useState<boolean>(false)
+
   const navigate = useNavigate();
-  // Checking if user is authenticated
+
   
-  
+
+
+  useEffect(() => {
+
+    // Check if any of the profile fields is null, then return the form 
+    const token = sessionStorage.getItem('token');
+    if (token){
+      const parsedToken = JSON.parse(token);
+      fetch('http://127.0.0.1:8000/api/v1/account/get_employee_profile', {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json",
+              'Authorization': `Bearer ${parsedToken.access_token}`
+            }
+          })
+      .then(response => response.json())
+      .then((data: FormData2) => {
+        setProfile(data);
+      })
+      .catch(error => {
+          console.error('Error fetching data:', error);
+          setActivateform(true)
+      });
+    }
+
+  }, [])
+
+  useEffect(() => {
+    // Check if any item in the profile array is null and bring the form   
+    if (profile && Object.values(profile).some(value => value === null)) {
+          setActivateform(true)
+        }
+  }, [profile])
+
 
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
   });
-
+  
   useEffect(() => {
 
     const isAuthenticated = sessionStorage.getItem("isAuthenticated") || false;
     console.log(isAuthenticated);
-    if (!isAuthenticated){
-      navigate('/')
-    }
-    
+    // if (!isAuthenticated){
+    //   navigate('/')
+    // }
 
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth });
@@ -46,7 +113,8 @@ function DashboardHome() {
 
   return (
     <div className="flex">
-      <SignUp />
+      
+      {activateForm ? <SignUp /> : ""}
       <DashboardHomeNav />
 
       <div className="w-full h-max">

@@ -6,26 +6,36 @@ import signUpBackground from "../../assets/signUpBackground.png";
 import signFrame from "../../assets/Frame 331.png";
 
 type FormData = {
-  phoneNumber: string;
-  age: string;
-  birthDate: string;
-  NId: string;
-  province: string;
-  district: string;
-  sector: string;
   cell: string;
+  created_at: string;
+  cv_url: string;
+  district: string;
+  first_name: string;
+  id: string;
+  last_name: string;
+  phone: string;
+  profile_url: string;
+  province: string;
+  sector: string;
+  user_id: string;
+  user_specialization: string;
   village: string;
 };
 
 const INITIAL_DATA: FormData = {
-  phoneNumber: "",
-  age: "",
-  birthDate: "",
-  NId: "",
-  province: "",
-  district: "",
-  sector: "",
   cell: "",
+  created_at: "",
+  cv_url: "",
+  district: "",
+  first_name: "",
+  id: "",
+  last_name: "",
+  phone: "",
+  profile_url: "",
+  province: "",
+  sector: "",
+  user_id: "",
+  user_specialization: "",
   village: "",
 };
 
@@ -40,6 +50,41 @@ function SignUp() {
   });
 
   useEffect(() => {
+
+    // Get current user
+    const token = sessionStorage.getItem('token');
+    if (token){
+      const parsedToken = JSON.parse(token);
+
+      Promise.all([
+        fetch("http://127.0.0.1:8000/api/v1/account/get_user", {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            'Authorization': `Bearer ${parsedToken.access_token}`
+          }
+        }).then(response => response.json()),
+
+        fetch('http://127.0.0.1:8000/api/v1/account/get_employee_profile', {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            'Authorization': `Bearer ${parsedToken.access_token}`
+          }
+        })
+        .then(response => response.json())
+        ])
+        .then(([response1, response2]) => {
+            setData(response2);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+    }
+
+
+
+
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth });
     };
@@ -78,7 +123,30 @@ function SignUp() {
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!isLastStep) return next();
-    alert("Successful Account Creation");
+    fetch('http://127.0.0.1:8000/api/v1/employee/add/profile_info/'+data.user_specialization, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'specialization_id': data.user_specialization
+      },
+      body: JSON.stringify({
+            first_name: data.first_name,
+            last_name: data.last_name,
+            phone: data.phone,
+            province: data.province,
+            district: data.district,
+            sector: data.sector,
+            cell: data.cell,
+            village: data.village,
+        })
+    })
+    .then(data => {
+      console.log('Data received:', data);
+    })
+    .catch(error => {
+        console.error('Error sending form data:', error);
+    });
+    
     toggleActivateForm();
   }
   return (

@@ -93,11 +93,9 @@ export default function DashboardNav({ children }: NavChild) {
             console.error('Error fetching data:', error);
             // Handle errors
         });
-  
-    
     }
     else{
-      navigate("/");
+      // navigate("/");
     }
 
     

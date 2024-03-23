@@ -97,7 +97,7 @@ export default function DashboardNav({ children }: NavChild) {
     
     }
     else{
-      navigate("/");
+      // navigate("/");
     }
 
 
