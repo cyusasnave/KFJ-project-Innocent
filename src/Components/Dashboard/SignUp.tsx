@@ -20,6 +20,7 @@ type FormData = {
   user_id: string;
   user_specialization: string;
   village: string;
+  CV: string;
 };
 
 const INITIAL_DATA: FormData = {
@@ -37,6 +38,7 @@ const INITIAL_DATA: FormData = {
   user_id: "",
   user_specialization: "",
   village: "",
+  CV: ""
 };
 
 interface WindowSize {
