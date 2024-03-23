@@ -43,17 +43,6 @@ export function UserForm({
 
   return (
     <FormWrapper title="Personal Information">
-      {/* <div className={inputDiv}>
-        <input
-          autoFocus
-          required
-          type="text"
-          className={inputStyle}
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => updateFields({ firstName: e.target.value })}
-        />
-      </div> */}
       <div className={inputDiv}>
         <input
           required
@@ -102,6 +91,23 @@ export function UserForm({
           onChange={(e) => updateFields({ NId: e.target.value })}
         />
       </div> */}
+      <div className={inputDiv}>
+      <label
+          htmlFor=""
+          className="w-[90%] m-auto text-sm mb-3 text-black pl-2"
+        >
+          Upload your CV:
+        </label>
+        <input
+          autoFocus
+          required
+          type="file"
+          className={inputStyle}
+          placeholder="First Name"
+          value={CV}
+          onChange={(e) => updateFields({ CV: e.target.value })}
+        />
+      </div>
     </FormWrapper>
   );
 }
