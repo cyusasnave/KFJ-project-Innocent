@@ -104,8 +104,8 @@ export function UserForm({
           type="file"
           className={inputStyle}
           placeholder="First Name"
-          value={CV}
-          onChange={(e) => updateFields({ CV: e.target.value })}
+          value={cv_url}
+          onChange={(e) => updateFields({ cv_url: e.target.value })}
         />
       </div>
     </FormWrapper>

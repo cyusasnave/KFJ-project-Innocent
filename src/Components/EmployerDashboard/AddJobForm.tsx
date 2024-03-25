@@ -263,7 +263,7 @@ function AddJobForm() {
             </div>
           </div>
 
-          <div className="h-[400px] w-full max-w-[600px] border rounded-lg">
+          <div className="h-[400px] w-full flex flex-1 border rounded-lg">
             <textarea name="" id="" className="w-full h-full bg-black/5 resize-none font-light p-5  outline-none" placeholder="Job description here"></textarea>
           </div>
           
