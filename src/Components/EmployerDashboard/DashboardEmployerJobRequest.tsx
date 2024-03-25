@@ -1,8 +1,9 @@
-import DashboardHomeNav from "./DashboardEmployerHomeNav";
-import { jobData } from "../../Data/dashboardJobRequest";
-import { useEffect, useState } from "react";
-import { Check, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import DashboardHomeNav from "./DashboardEmployerHomeNav";
+// import { jobData } from "../../Data/dashboardJobRequest";
+// import { useEffect, useState } from "react";
+// import { Check, X } from "lucide-react";
+// import { Link } from "react-router-dom";
 
 
 const people = [
@@ -62,37 +63,37 @@ const people = [
 
 
 
-interface WindowSize {
-  width: number;
-}
+// interface WindowSize {
+//   width: number;
+// }
 
-interface JobDataType {
-  id: number;
-  description: string;
-  companyName: string;
-  isApproved: boolean;
-}
+// interface JobDataType {
+//   id: number;
+//   description: string;
+//   companyName: string;
+//   isApproved: boolean;
+// }
 
 function DashboardJobRequest() {
-  const [windowSize, setWindowSize] = useState<WindowSize>({
-    width: window.innerWidth,
-  });
+  // const [windowSize, setWindowSize] = useState<WindowSize>({
+  //   width: window.innerWidth,
+  // });
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({ width: window.innerWidth });
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setWindowSize({ width: window.innerWidth });
+  //   };
 
-    window.addEventListener("resize", handleResize);
+  //   window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
 
-  const enableBurgerMenu = (): boolean => {
-    return windowSize.width <= 500; // Enable burger menu for iPad and mobile screens (less than or equal to 768px)
-  };
+  // const enableBurgerMenu = (): boolean => {
+  //   return windowSize.width <= 500; // Enable burger menu for iPad and mobile screens (less than or equal to 768px)
+  // };
 
   // return (
   //   <div className="flex gap-0 md:gap-5">
@@ -209,30 +210,32 @@ function DashboardJobRequest() {
         <div className="mt-5">
           <ul role="list" className="divide-y divide-gray-100">
             {people.map((person) => (
-              <li key={person.email} className="flex justify-between gap-x-6 py-5">
-                <div className="flex min-w-0 gap-x-4">
-                  <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={person.imageUrl} alt="" />
-                  <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-6 text-gray-900">{person.name}</p>
-                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">{person.email}</p>
-                  </div>
-                </div>
-                <div className="shrink-0 sm:flex sm:flex-col sm:items-end">
-                  <p className="text-sm leading-6 text-gray-900">{person.role}</p>
-                  {person.lastSeen ? (
-                    <p className="mt-1 text-xs leading-5 text-gray-500">
-                      Last seen <time dateTime={person.lastSeenDateTime}>{person.lastSeen}</time>
-                    </p>
-                  ) : (
-                    <div className="mt-1 flex items-center gap-x-1.5">
-                      <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                      </div>
-                      <p className="text-xs leading-5 text-gray-500">Online</p>
+              <Link to={'/dashboard/employer/jobrequests/:id'}>
+                <li key={person.email} className="flex justify-between gap-x-6 py-5 hover:bg-black/5 px-2 cursor-pointer">
+                  <div className="flex min-w-0 gap-x-4">
+                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={person.imageUrl} alt="" />
+                    <div className="min-w-0 flex-auto">
+                      <p className="text-sm font-semibold leading-6 text-gray-900">{person.name}</p>
+                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">{person.email}</p>
                     </div>
-                  )}
-                </div>
-              </li>
+                  </div>
+                  <div className="shrink-0 sm:flex sm:flex-col sm:items-end">
+                    <p className="text-sm leading-6 text-gray-900">{person.role}</p>
+                    {person.lastSeen ? (
+                      <p className="mt-1 text-xs leading-5 text-gray-500">
+                        Last seen <time dateTime={person.lastSeenDateTime}>{person.lastSeen}</time>
+                      </p>
+                    ) : (
+                      <div className="mt-1 flex items-center gap-x-1.5">
+                        <div className="flex-none rounded-full bg-emerald-500/20 p-1">
+                          <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                        </div>
+                        <p className="text-xs leading-5 text-gray-500">Online</p>
+                      </div>
+                    )}
+                  </div>
+                </li>
+              </Link>
             ))}
           </ul>
         </div>

@@ -1,5 +1,5 @@
 import DashboardHomeNav from "./DashboardEmployerHomeNav";
-import { Bell, Users} from "lucide-react";
+import { Bell, Users } from "lucide-react";
 /* import { selectedJob } from "../../Data/UserDashboardData"; */
 import { useEffect, useState } from "react";
 /* import SignUp from "./SignUpEmployer"; */
@@ -54,37 +54,61 @@ function DashboardHome() {
       <div className="w-full h-max">
         {/*  Remember to enable the dark theme here(...Home header... ) */}
         <div
-          className={`flex items-center gap-10 w-full h-max pt-10 m-auto ${
-            enableBurgerMenu() ? "mt-[80px]" : " "
+        style={{
+          backgroundImage:
+            "linear-gradient(180deg, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0.1)), url(/hand.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+          className={`relative flex flex-col items-center gap-10 w-full h-[50vh] mb-[100px] pt-10 m-auto ${
+            enableBurgerMenu() ? "" : ""
           }`}
         >
-          <h1 className="w-full text-center">
+
+          <h1 className="w-full text-center text-white">
             <span className="font-light">Good Afternoon,</span> Janet
           </h1>
+
           <div className="fixed top-10 right-10">
             <div className="relative w-[50px] h-[50px] shadow-lg bg-indigo-300 hover:bg-indigo-200 flex justify-center items-center rounded-full cursor-pointer">
               <div className="absolute w-[10px] h-[10px] right-0 top-0 bg-red-400 rounded-full"></div>
               <Bell size={32} />
             </div>
           </div>
-        </div>
-        <div className="w-full my-10">
+
           <div
-            className={`w-full h-max text-2xl md:text-4xl font-bold text-center mb-4`}
+            className={`w-full h-max text-2xl md:text-4xl font-bold text-center mb-4 text-white`}
           >
             Welcome to K&JF
           </div>
-          <div className="grid grid-cols-4 gap-3 place-items-center p-4">
-            <div className="border w-full h-[150px] rounded-lg bg-white shadow-inner flex items-center justify-center p-3">
-              <div className="w-1/3 h-max bg-black p-4 rounded-full shadow-inner shadow-white"><Users className="w-full h-full text-white" /></div>
-              <div className="flex flex-1 flex-col gap-3">
-                <div>99+</div>
+
+          <div className="absolute -bottom-1/2 md:-bottom-1/4 w-[90%] bg-white h-max grid grid-cols-1 md:grid-cols-2 gap-5 place-items-center p-4 rounded-lg shadow-lg">
+            <div className="w-full flex flex-col gap-3 lg:flex-row h-full rounded-lg bg-cyan-800 shadow-inner flex items-center justify-center p-4">
+              <div className="w-full lg:w-[50%] lg:border-r h-full md:text-center text-white pl-5 flex flex-col justify-center">
+                <h3 className="text-2xl">Employees</h3>
+                <h1 className="text-5xl">999+</h1>
+                <p className="text-sm">2 new employees</p>
+              </div>
+              <div className="w-full lg:w-[50%] h-full flex-1 md:text-center text-white pl-5 flex flex-col justify-center">
+                <h1 className="text-5xl mb-4">102</h1>
+                <p className="text-sm">Have applied for a job</p>
               </div>
             </div>
-            <div className="border w-full h-[150px] rounded-lg bg-white shadow-inner">snave</div>
-            <div className="border w-full h-[150px] rounded-lg bg-white shadow-inner">snave</div>
-            <div className="border w-full h-[150px] rounded-lg bg-white shadow-inner">snave</div>
+            <div className="w-full flex flex-col gap-3 lg:flex-row h-full rounded-lg bg-cyan-800 shadow-inner flex items-center justify-center p-4">
+            <div className="w-full lg:w-[50%] lg:border-r h-full md:text-center text-white pl-5 flex flex-col justify-center">
+                <h1 className="text-5xl">88</h1>
+                <h3 className="text-2xl">Job available</h3>
+              </div>
+              <div className="w-full lg:w-[50%] h-full md:text-center text-white pl-5 flex flex-col justify-center">
+                <p className="text-sm">From</p>
+                <h1 className="text-5xl">102</h1>
+                <p className="text-sm text-xl">Companies</p>
+              </div>
+            </div>
           </div>
+        </div>
+        <div className="w-full my-10">
           {/* <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-10 max-w-[1400px] mt-5">
 
             <GridItem title="User/Interation">

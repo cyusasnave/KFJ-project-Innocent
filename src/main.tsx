@@ -29,6 +29,7 @@ import DashboardEmployerSettings from './Components/EmployerDashboard/DashboardE
 import DashboardEmployerHelp from './Components/EmployerDashboard/DashboardEmployerHelp.tsx';
 import DashboardEmployerBrowseJob from './Components/EmployerDashboard/DashboardEmpolyerBrowseJob.tsx';
 import AddJobForm from './Components/EmployerDashboard/AddJobForm.tsx';
+import DashboardSingleRequest from './Components/EmployerDashboard/DashboardSingleRequest.tsx';
 
 const router = createBrowserRouter([
   {
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
   {
     path: "dashboard/employer/list/form",
     element: <AddJobForm />
+  },
+  {
+    path: "dashboard/employer/jobrequests/:id",
+    element: <DashboardSingleRequest />
   }
 ]);
 
