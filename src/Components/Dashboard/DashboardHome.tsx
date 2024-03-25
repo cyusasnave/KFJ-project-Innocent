@@ -114,7 +114,8 @@ function DashboardHome() {
   return (
     <div className="flex">
       
-      {activateForm ? <SignUp /> : ""}
+      {/* {activateForm ? <SignUp /> : ""} */}
+      <SignUp />
       <DashboardHomeNav />
 
       <div className="w-full h-max">
