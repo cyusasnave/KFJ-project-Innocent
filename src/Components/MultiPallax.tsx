@@ -69,7 +69,7 @@ function MultiPallax() {
       const response = await fetch("http://localhost:8000/token", {
       method: "POST",
       headers: {
-        'Content-type' : 'application/json'
+        'Content-type' : 'application/x-www-form-urlencoded'
       },
       body: `username=${encodeURIComponent(loginUsername)}&password=${encodeURIComponent(loginPassword)}`
     })
@@ -91,6 +91,8 @@ function MultiPallax() {
       const errorData = await response.json()
       console.log(errorData.detail);
     }
+    console.log(loginPassword);
+    
     }
     catch (err){
       console.log(err);
