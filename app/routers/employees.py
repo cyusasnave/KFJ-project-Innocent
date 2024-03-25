@@ -15,16 +15,16 @@ from typing import Annotated, List
 router = APIRouter(tags=["Employees"])
 
 
-@router.post("/api/v1/employee/profile_info")
+@router.post("/api/v1/employee/add/profile_info/{specialization_id}")
 async def add_employee_profile(
     request: EmployeeModel,
-    # specialization_id: str,
+    specialization_id: str,
     current_user: Annotated[User, Depends(get_current_employee)],
     db: Session = Depends(get_db),
 ):
     user = Employee(
         user_id=current_user.id,
-        # user_specialization=specialization_id,
+        user_specialization=specialization_id,
         first_name=request.first_name,
         last_name=request.last_name,
         phone=request.phone,
