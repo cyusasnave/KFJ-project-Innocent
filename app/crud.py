@@ -114,3 +114,4 @@ def save_uploaded_picture(image_file: UploadFile):
     with open(file_path, "wb") as buffer:
         buffer.write(image_file.file.read())
     return file_path
+

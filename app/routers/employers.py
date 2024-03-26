@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends,  UploadFile,  File,  HTTPException
-from app.internal.models import Employer, User
+from app.internal.models import Employer, User, Job
 from app.crud import get_current_user, get_current_admin_user, get_current_employer
-from app.internal.schemas import EmployerModel,  EmployerViewModel
+from app.internal.schemas import EmployerModel,  EmployerViewModel, JobModel
 from sqlalchemy.orm import Session
 from app.internal.database import get_db
 from typing import Annotated,  List
@@ -49,10 +49,35 @@ async def get_employer_profile(
     current_user: Annotated[User, Depends(get_current_employer)],
     db: Session = Depends(get_db),
 ):
-    user = db.query(User).filter(User.id == current_user.id).first()
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    profile = db.query(Employer).filter(Employer.user_id == user.id).first()
+    profile = db.query(Employer).filter(Employer.user_id == current_user.id).first()
+    print(profile)
     if profile is None:
         raise HTTPException(status_code=404, detail="Employer Profile not found")
     return profile
+
+
+@router.get("/api/v1/jobs/data/employer")
+async def get_employer_jobs(
+    current_user: Annotated[User, Depends(get_current_employer)],
+    db: Session = Depends(get_db),
+):
+    jobs = db.query(Job).filter(Job.employer_id == current_user.id).all()
+    data = []
+    for job in jobs:
+        job_data = {
+            "id": job.id,
+            "job_category": job.job_category.category,
+            "sub_category": job.sub_job_category.sub_category,
+            "status": job.status,
+            "deadline": job.deadline,
+            "job_description": job.job_description,
+            "vacancy": job.vacancy,
+            "job_type": job.job_type,
+            "experience": job.experience,
+            "responsibility ": job.responsibility,
+            "job_location": job.job_location,
+            "gender": job.gender,
+            "published_date": job.published_date,
+        }
+        data.append(job_data)
+    return data
