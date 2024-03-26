@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends,  UploadFile,  File,  HTTPException
 from app.internal.models import Employer, User, Job
-from app.crud import get_current_user, get_current_admin_user, get_current_employer
+from app.crud import get_current_user, get_current_admin_user, get_current_employer, save_uploaded_logo
 from app.internal.schemas import EmployerModel,  EmployerViewModel, JobModel
 from sqlalchemy.orm import Session
 from app.internal.database import get_db
@@ -10,19 +10,18 @@ from typing import Annotated,  List
 router = APIRouter(tags=["Employers"])
 
 
-@router.post("/api/v1/employer/add/profile/{user_id}")
+@router.post("/api/v1/employer/add/profile/")
 async def add_employer_profile(
-    user_id: str,
     request: EmployerModel,
-    current_user: Annotated[User, Depends(get_current_admin_user)],
+    current_user: Annotated[User, Depends(get_current_employer)],
     db: Session = Depends(get_db),
 ):
-    user = db.query(User).filter(User.id == user_id and User.role == "employer").first()
+    user = db.query(User).filter(User.id == current_user.id and User.role == "employer").first()
     if user is None:
         raise HTTPException(status_code=404, detail="User Not Found!")
     new_data = Employer(
         type_of_employer=request.type_of_employer,
-        user_id=user_id,  #
+        user_id=current_user.id,
         name=request.name,
         logo_url="",
         contract_url="",
@@ -36,22 +35,21 @@ async def add_employer_profile(
     return "Employer profile created successfully"
 
 
-@router.get("/api/v1/employer/data/all", response_model=List[EmployerViewModel])
-async def get_employer(
-    current_user: Annotated[User, Depends(get_current_admin_user)],
-    db: Session = Depends(get_db),
-):
-    employers = db.query(Employer).all()
-    return employers
+# @router.get("/api/v1/employer/data/all", response_model=List[EmployerViewModel])
+# async def get_employer(
+#     current_user: Annotated[User, Depends(get_current_admin_user)],
+#     db: Session = Depends(get_db),
+# ):
+#     employers = db.query(Employer).all()
+#     return employers
 
 # Getting Employer Profile
-@router.get("/api/v1/account/get_employer_profile")
+@router.get("/api/v1/account/get_employer_profile/")
 async def get_employer_profile(
     current_user: Annotated[User, Depends(get_current_employer)],
     db: Session = Depends(get_db),
 ):
     profile = db.query(Employer).filter(Employer.user_id == current_user.id).first()
-    print(profile)
     if profile is None:
         raise HTTPException(status_code=404, detail="Employer Profile not found")
     return profile
@@ -82,3 +80,18 @@ async def get_employer_jobs(
         }
         data.append(job_data)
     return data
+
+
+@router.post("/api/v1/employer/add/logo")
+async def add_employer_logo(
+    current_user: Annotated[User, Depends(get_current_employer)],
+    db: Session = Depends(get_db),
+    logo: UploadFile = File(...),
+):
+    employer = db.query(Employer).filter(Employer.user_id == current_user.id).first()
+    if employer is None:
+        raise HTTPException(status_code=404, detail="Employer Not Found!")
+    image_file_path = save_uploaded_logo(logo)
+    employer.logo_url = image_file_path
+    db.commit()
+    return "Logo Uploaded SuccessFully!"

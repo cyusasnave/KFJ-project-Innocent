@@ -112,7 +112,7 @@ async def get_all_specialization(db: Session = Depends(get_db)):
     return specialization
 
 
-@router.get("/api/v1/available_jobs/data/all", response_model=List[SpecializationView])
-async def get_all_specialization(db: Session = Depends(get_db)):
-    specialization = db.query(Specialization).all()
-    return specialization
+# @router.get("/api/v1/available_jobs/data/all", response_model=List[SpecializationView])
+# async def get_all_specialization(db: Session = Depends(get_db)):
+#     specialization = db.query(Specialization).all()
+#     return specialization

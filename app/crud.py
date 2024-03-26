@@ -97,7 +97,7 @@ async def get_current_employee(
 
 
 def save_uploaded_cv(cv_file: UploadFile):
-    upload_folder = "employee_files\employee_cv"
+    upload_folder = "media\employee\cv"
     if not os.path.exists(upload_folder):
         os.makedirs(upload_folder)
     file_path = os.path.join(upload_folder, cv_file.filename)
@@ -107,7 +107,16 @@ def save_uploaded_cv(cv_file: UploadFile):
 
 
 def save_uploaded_picture(image_file: UploadFile):
-    upload_folder = "employee_files\employee_profile_picture"
+    upload_folder = "media\employee\profile_picture"
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+    file_path = os.path.join(upload_folder, image_file.filename)
+    with open(file_path, "wb") as buffer:
+        buffer.write(image_file.file.read())
+    return file_path
+
+def save_uploaded_logo(image_file: UploadFile):
+    upload_folder = "media\employer\logo"
     if not os.path.exists(upload_folder):
         os.makedirs(upload_folder)
     file_path = os.path.join(upload_folder, image_file.filename)
