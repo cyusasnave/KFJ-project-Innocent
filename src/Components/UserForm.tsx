@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { FormWrapper } from "./FormWrapper";
+
 
 type UserData = {
   // cell: string;
@@ -41,6 +43,23 @@ export function UserForm({
   const inputDiv = `w-full mt-8 flex justify-center items-start flex-col w-full`;
   const inputStyle = `outline-none border-b border-black w-[90%] m-auto py-2 px-4 text-sm text-black text-xs bg-transparent autofill:none`;
 
+  const [specializations, setSpecializations] = useState([]);
+
+  useEffect(() => {
+    Promise.all([
+      fetch("http://127.0.0.1:8000/api/v1/specialization/all")
+      .then(response => response.json()),
+      ])
+      .then(([response,]) => {
+          setSpecializations(response);
+                    
+      })
+      .catch(error => {
+          console.error('Error fetching data:', error);
+      });
+  }, [])
+  
+
   return (
     <FormWrapper title="Personal Information">
       <div className={inputDiv}>
@@ -71,15 +90,20 @@ export function UserForm({
         >
           Specilatization:
         </label>
-        <input
+        {/* <input
           required
           min={1}
           type="text"
           className={inputStyle}
-          placeholder="Birth date"
+          placeholder="Specialization"
           value={user_specialization}
           onChange={(e) => updateFields({ user_specialization: e.target.value })}
-        />
+        /> */}
+        <select className="font-light w-full py-3 px-4 border-b-2 w-[90%] outline-none">
+          {specializations.map((item, index) => (
+            <option value={item.id}>{item.name}</option>
+          ))}
+        </select>
       </div>
       {/* <div className={inputDiv}>
         <input
@@ -91,23 +115,6 @@ export function UserForm({
           onChange={(e) => updateFields({ NId: e.target.value })}
         />
       </div> */}
-      <div className={inputDiv}>
-      <label
-          htmlFor=""
-          className="w-[90%] m-auto text-sm mb-3 text-black pl-2"
-        >
-          Upload your CV:
-        </label>
-        <input
-          autoFocus
-          required
-          type="file"
-          className={inputStyle}
-          placeholder="First Name"
-          // value={cv_url}
-          onChange={(e) => updateFields({ cv_url: e.target.value })}
-        />
-      </div>
     </FormWrapper>
   );
 }

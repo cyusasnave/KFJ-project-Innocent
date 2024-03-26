@@ -99,11 +99,11 @@ export function AddressForm({
       <div className={inputDiv}>
         <input
           required
-          type="text"
+          type="number"
           className={inputStyle}
           placeholder="Phone"
           value={phone}
-          onChange={(e) => updateFields({ village: e.target.value })}
+          onChange={(e) => updateFields({ phone: e.target.value })}
         />
       </div>
     </FormWrapper>

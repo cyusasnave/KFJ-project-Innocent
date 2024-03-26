@@ -20,7 +20,6 @@ type FormData = {
   user_id: string;
   user_specialization: string;
   village: string;
-  CV: string;
 };
 
 const INITIAL_DATA: FormData = {
@@ -38,7 +37,6 @@ const INITIAL_DATA: FormData = {
   user_id: "",
   user_specialization: "",
   village: "",
-  CV: ""
 };
 
 interface WindowSize {
@@ -125,29 +123,38 @@ function SignUp() {
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!isLastStep) return next();
-    fetch('http://127.0.0.1:8000/api/v1/employee/add/profile_info/'+data.user_specialization, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'specialization_id': data.user_specialization
-      },
-      body: JSON.stringify({
-            first_name: data.first_name,
-            last_name: data.last_name,
-            phone: data.phone,
-            province: data.province,
-            district: data.district,
-            sector: data.sector,
-            cell: data.cell,
-            village: data.village,
-        })
-    })
-    .then(data => {
-      console.log('Data received:', data);
-    })
-    .catch(error => {
-        console.error('Error sending form data:', error);
-    });
+
+    // Get current user
+    const token = sessionStorage.getItem('token');
+    if (token){
+      const parsedToken = JSON.parse(token);
+      const sendData = () => {
+        
+      }
+      fetch('http://127.0.0.1:8000/api/v1/employee/add/profile_info/'+data.user_specialization, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${parsedToken.access_token}`
+        },
+        body: JSON.stringify({
+              first_name: data.first_name,
+              last_name: data.last_name,
+              phone: data.phone,
+              province: data.province,
+              district: data.district,
+              sector: data.sector,
+              cell: data.cell,
+              village: data.village,
+          })
+      })
+      .then(data => {
+        console.log("Profile updated successfully");
+      })
+      .catch(error => {
+          console.error('Error sending form data:', error);
+      });
+    }
     
     toggleActivateForm();
   }

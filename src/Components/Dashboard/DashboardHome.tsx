@@ -23,7 +23,7 @@ interface FormData1 {
 interface FormData2 {
   cell: string;
   created_at: string;
-  cv_url: string;
+  // cv_url: string;
   district: string;
   first_name: string;
   id: string;
@@ -42,7 +42,7 @@ interface FormData2 {
 
 function DashboardHome() {
   const [userData, setUserData] = useState<any>();
-  const [profile, setProfile] = useState<FormData2 | null>(null);
+  const [profile, setProfile] = useState<any>(null);
   const [activateForm, setActivateform] = useState<boolean>(false)
 
   const navigate = useNavigate();
@@ -56,31 +56,52 @@ function DashboardHome() {
     const token = sessionStorage.getItem('token');
     if (token){
       const parsedToken = JSON.parse(token);
-      fetch('http://127.0.0.1:8000/api/v1/account/get_employee_profile', {
+      const fetchProfile = async () => {
+        try{
+          const response = await fetch('http://127.0.0.1:8000/api/v1/account/get_employee_profile', {
             method: "GET",
             headers: {
               "Content-type": "application/json",
               'Authorization': `Bearer ${parsedToken.access_token}`
             }
-          })
-      .then(response => response.json())
-      .then((data: FormData2) => {
-        setProfile(data);
-      })
-      .catch(error => {
-          console.error('Error fetching data:', error);
-          setActivateform(true)
-      });
+          });
+          if (response.ok){
+            const data = await response.json()
+            setProfile(JSON.stringify(data));
+            
+          }
+        }
+        catch(e){
+          console.log("There was an error: ", e);
+          
+        }
+        
+      // .then((data: FormData2) => {
+      //   setProfile(data);
+      // })
+      // .catch(error => {
+      //     console.error('Error fetching data:', error);
+      //     setActivateform(true)
+      // });
+      // }
+      
     }
+    fetchProfile();
+    
+  }
 
   }, [])
 
-  useEffect(() => {
-    // Check if any item in the profile array is null and bring the form   
-    if (profile && Object.values(profile).some(value => value === null)) {
-          setActivateform(true)
-        }
-  }, [profile])
+  // useEffect(() => {
+  //   console.log(profile);
+  //   // if (profile.cv_url == "null"){
+  //   //   console.log("yes");
+  //   // }
+  //   // Check if any item in the profile array is null and bring the form   
+  //   if (profile && Object.values(profile).some(value => value === null)) {
+  //         setActivateform(true)
+  //       }
+  // }, [profile])
 
 
   const [windowSize, setWindowSize] = useState<WindowSize>({
@@ -114,7 +135,7 @@ function DashboardHome() {
   return (
     <div className="flex">
       
-      {/* {activateForm ? <SignUp /> : ""} */}
+      {activateForm ? <SignUp /> : ""}
       <SignUp />
       <DashboardHomeNav />
 
