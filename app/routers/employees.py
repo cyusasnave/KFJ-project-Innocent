@@ -54,17 +54,19 @@ async def add_employee_profile(
     return "Personal Information accepted!"
 
 
-# Getting Employer Profile
-@router.get("/api/v1/account/get_employee_profile")
-async def get_employee_profile(
+@router.post("/api/v1/employee/add/cv/")
+async def add_employee_cv(
     current_user: Annotated[User, Depends(get_current_employee)],
     db: Session = Depends(get_db),
+    cv_file: UploadFile = File(...),
 ):
-    profile = db.query(Employee).filter(Employee.user_id == current_user.id).first()
-    print(profile)
-    if profile is None:
-        raise HTTPException(status_code=404, detail="Employee Profile not found")
-    return profile
+    employee = db.query(Employee).filter(Employee.user_id == current_user.id).first()
+    if employee is None:
+        raise HTTPException(status_code=404, detail="Employee Not Found!")
+    cv_file_path = save_uploaded_cv(cv_file)
+    db.commit()
+    return "Your Cv uploaded SuccessFully!"
+
 
 @router.post("/api/v1/employee/add/cv_file")
 async def add_employee_cv_picture(
