@@ -42,22 +42,34 @@ async def add_employee_profile(
     return "Personal Information accepted!"
 
 
-@router.post("/api/v1/employee/add/cv_profile")
-async def add_employee_cv_picture(
+@router.put("/api/v1/employee/add/cv/")
+async def add_employee_cv(
     current_user: Annotated[User, Depends(get_current_employee)],
     db: Session = Depends(get_db),
     cv_file: UploadFile = File(...),
-    image_file: UploadFile = File(...),
 ):
     employee = db.query(Employee).filter(Employee.user_id == current_user.id).first()
     if employee is None:
         raise HTTPException(status_code=404, detail="Employee Not Found!")
     cv_file_path = save_uploaded_cv(cv_file)
-    image_file_path = save_uploaded_picture(image_file)
     employee.cv_url = cv_file_path
+    db.commit()
+    return "Your Cv uploaded SuccessFully!"
+
+
+@router.put("/api/v1/employee/add/profile_pic/")
+async def add_employee_profile_pic(
+    current_user: Annotated[User, Depends(get_current_employee)],
+    db: Session = Depends(get_db),
+    image_file: UploadFile = File(...),
+):
+    employee = db.query(Employee).filter(Employee.user_id == current_user.id).first()
+    if employee is None:
+        raise HTTPException(status_code=404, detail="Employee Not Found!")
+    image_file_path = save_uploaded_picture(image_file)
     employee.profile_url = image_file_path
     db.commit()
-    return "Your Files uploaded SuccessFully!"
+    return "Your Profile picture uploaded SuccessFully!"
 
 
 @router.post("/api/v1/specialization/data/")
@@ -77,7 +89,7 @@ async def get_all_specialization(db: Session = Depends(get_db)):
     return specialization
 
 
-@router.get("/api/v1/available_jobs/data/all", response_model=List[SpecializationView])
-async def get_all_specialization(db: Session = Depends(get_db)):
-    specialization = db.query(Specialization).all()
-    return specialization
+# @router.get("/api/v1/available_jobs/data/all", response_model=List[SpecializationView])
+# async def get_all_specialization(db: Session = Depends(get_db)):
+#     specialization = db.query(Specialization).all()
+#     return specialization
