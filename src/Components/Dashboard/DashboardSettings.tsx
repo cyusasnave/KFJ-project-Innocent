@@ -1,6 +1,6 @@
 import DashboardHomeNav from "./DashboardHomeNav";
 import { ImageUp } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react"; // Import ChangeEvent from react
 
 interface PreviewImageTypes {
@@ -34,7 +34,20 @@ interface FormData2 {
   village: string;
 }
 
+
+
+function getAuth(){
+  // Get current user
+  const token = sessionStorage.getItem('token');
+  if (token){
+    const parsedTokenValue = JSON.parse(token).access_token;
+    return parsedTokenValue;
+  }
+}
+
 function DashboardSettings() {
+  const navigate = useNavigate();
+  
   // To preview the Profile picture
   function previewImage({
     event,
@@ -90,42 +103,92 @@ function DashboardSettings() {
     village: "",
   });
 
-  useEffect(() => {
-    // Get current user
-    const token = sessionStorage.getItem('token');
-    
-    
-    if (token){
-      const parsedToken = JSON.parse(token);
 
-      Promise.all([
-        fetch("http://127.0.0.1:8000/api/v1/account/get_user", {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            'Authorization': `Bearer ${parsedToken.access_token}`
-          }
-        }).then(response => response.json()),
 
-        fetch('http://127.0.0.1:8000/api/v1/account/get_employee_profile', {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            'Authorization': `Bearer ${parsedToken.access_token}`
-          }
-        }).then(response => response.json())
-        ])
-        .then(([response1, response2]) => {
-            setFormData1(response1);
-            setFormData2(response2);
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-  
-        const profileLink = formData2.cv_url;
-        console.log(profileLink);
+  // Uploading the CV
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
     }
+  };
+
+  const handleUpload = async () => {
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append('cv_file', selectedFile);
+
+    // Get Toekn first
+    const parsedToken = getAuth();
+      if (parsedToken){
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/v1/employee/add/cv_file', {
+          method: 'POST',
+          headers: {
+            // "Content-type": "multipart/form-data",
+            'Authorization': `Bearer ${parsedToken}`
+          },
+          body: formData,
+        });
+
+        if (response.ok) {
+          console.log('File uploaded successfully');
+          window.location.reload();
+        } else {
+          console.error('Failed to upload file');
+        }
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+  };
+
+
+
+  useEffect(() => {
+    // const access_token = getAuth();
+    // if (access_token){
+    //   setParsedToken(access_token);
+      
+    // }
+    // else{
+    //   navigate('/');
+    // }
+
+    
+      const parsedToken = getAuth();
+      if (parsedToken){
+
+          Promise.all([
+            fetch("http://127.0.0.1:8000/api/v1/account/get_user", {
+              method: "GET",
+              headers: {
+                "Content-type": "application/json",
+                'Authorization': `Bearer ${parsedToken}`
+              }
+            }).then(response => response.json()),
+
+            fetch('http://127.0.0.1:8000/api/v1/account/get_employee_profile', {
+              method: "GET",
+              headers: {
+                "Content-type": "application/json",
+                'Authorization': `Bearer ${parsedToken}`
+              }
+            }).then(response => response.json())
+            ])
+            .then(([response1, response2]) => {
+                setFormData1(response1);
+                setFormData2(response2);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+        else{
+          navigate('/');
+        }
   }, [])
 
   return (
@@ -139,10 +202,13 @@ function DashboardSettings() {
     >
       <DashboardHomeNav />
 
-      <form
+      {/* <form
         action=""
         method="post"
         className="relative w-[90%] bg-white h-[95vh] rounded-2xl overflow-y-scroll md:px-5"
+      > */}
+      <div
+      className="relative w-[90%] bg-white h-[95vh] rounded-2xl overflow-y-scroll md:px-5"
       >
         <div className="sticky top-0 z-[2000] w-full flex justify-end items-center h-max p-5">
           <Link to="">
@@ -253,16 +319,17 @@ function DashboardSettings() {
             <label htmlFor="" className="italic">Curiculum Vitae</label>
               <input
                 type="file"
-                placeholder="Company Name"
                 className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
+                onChange={handleFileChange}
               />
             <div className="w-full h-[100px] flex md:justify-end justify-around items-center px-10 md:px-20 gap-5">
-                <button type="submit" className="border bg-green-800 text-white px-10 py-2 rounded-lg hover:bg-cyan-800/80">Upload</button>
+                <button onClick={handleUpload} className="border bg-green-800 text-white px-10 py-2 rounded-lg hover:bg-cyan-800/80">Upload</button>
             </div>
               
           </div>
         </div>
-      </form>
+        </div>
+      {/* </form> */}
     </div>
   );
 }

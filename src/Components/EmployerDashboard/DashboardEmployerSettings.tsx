@@ -1,5 +1,5 @@
 import DashboardHomeNav from "./DashboardEmployerHomeNav";
-import { ImageUp } from "lucide-react";
+import { ImageUp, Upload } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react"; // Import ChangeEvent from react
 
@@ -30,7 +30,19 @@ interface FormData2 {
   user_id: string;
 }
 
+function getAuth(){
+  // Get current user
+  const token = sessionStorage.getItem('token');
+  if (token){
+    const parsedTokenValue = JSON.parse(token).access_token;
+    return parsedTokenValue;
+  }
+}
 function DashboardSettings() {
+
+  // Uploading the Logo
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
 
   // To preview the logo
   function previewImage({
@@ -44,6 +56,7 @@ function DashboardSettings() {
 
     reader.onload = function () {
       const dataURL = reader.result as string;
+      
       const imagePreview = document.getElementById(
         imagePreviewed
       ) as HTMLDivElement;
@@ -56,8 +69,44 @@ function DashboardSettings() {
     const files = input.files;
     if (files && files.length > 0) {
       reader.readAsDataURL(files[0]);
+      setSelectedFile(files[0])
+    }
+
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
     }
   }
+
+  const handleUpload = async () => {
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append('logo', selectedFile);
+
+    // Get Toekn first
+    const parsedToken = getAuth();
+      if (parsedToken){
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/v1/employer/add/logo', {
+          method: 'POST',
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            'Authorization': `Bearer ${parsedToken}`
+          },
+          body: formData,
+        });
+
+        if (response.ok) {
+          console.log('File uploaded successfully');
+          window.location.reload();
+        } else {
+          console.error('Failed to upload file');
+        }
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+  };
 
   // To handle the form
   
@@ -108,8 +157,6 @@ function DashboardSettings() {
         ])
         .then(([response1, response2]) => {
             // Process the responses
-            console.log("These are form 1", response1);
-            console.log("These are form 2", response2);
             setFormData1(response1);
             setFormData2(response2);
         })
@@ -174,6 +221,9 @@ function DashboardSettings() {
               >
                 <ImageUp className="w-full h-full text-white" />
               </div>
+              <div className="h-[100px] flex justify-end items-center px-10 md:px-20 gap-5">
+                <button type="submit" className="border bg-cyan-800 text-white px-10 py-2 rounded-lg hover:bg-cyan-800/80" onClick={handleUpload}><Upload size={20} /></button>
+              </div>
               <div className="absolute -bottom-10 text-sm font-thin">
                 Add company Logo
               </div>
@@ -224,8 +274,16 @@ function DashboardSettings() {
               
           </div>
 
-          <div className="h-[700px] w-full max-w-[600px] border rounded-lg">
-            <textarea name="" id="" className="w-full h-full bg-black/5 resize-none font-light p-5  outline-none" placeholder="Job description here"></textarea>
+          <div className="h-[700px] w-full max-w-[600px] border p-5 rounded-lg flex flex-col gap-5 p-3 pt-5 overflow-auto">
+            <label htmlFor="" className="italic">Amasezerano</label>
+              <input
+                type="file"
+                className="font-light py-3 px-4 border-b-2 w-[90%] outline-none"
+              />
+            <div className="w-full h-[100px] flex md:justify-end justify-around items-center px-10 md:px-20 gap-5">
+                <button  className="border bg-green-800 text-white px-10 py-2 rounded-lg hover:bg-cyan-800/80">Upload</button>
+            </div>
+              
           </div>
           
         </div>
