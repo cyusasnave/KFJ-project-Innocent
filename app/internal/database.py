@@ -12,7 +12,7 @@ db_user = os.getenv("POSTGRESQL_USERNAME")
 db_pass = os.getenv("POSTGRESQL_PASSWORD")
 
 
-DATABASE_URL = f"postgresql://{db_user}:{db_pass}@localhost:5432/jobfinder"
+DATABASE_URL = f"postgresql://{db_user}:{db_pass}@localhost:5432/jobFinder"
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()

@@ -118,6 +118,7 @@ class Job(Base):
     status = Column(String)
     job_type = Column(String)
     experience = Column(String)
+    position = Column(String)
     responsibility = Column(String)
     job_location = Column(String)
     gender = Column(String)
